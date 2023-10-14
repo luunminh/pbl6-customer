@@ -12,6 +12,7 @@ import LoadingContainer from './modules/components/LoadingContainer';
 import { DialogProvider } from '@components';
 import { Provider } from 'react-redux';
 import createStore from '@redux/store';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const { store } = createStore();
 
@@ -59,6 +60,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 </Suspense>
               </BrowserRouter>
             </ProSidebarProvider>
+            <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </DialogProvider>
       </Provider>
