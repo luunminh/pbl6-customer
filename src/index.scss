@@ -1,0 +1,10 @@
+@use 'src/modules/components/scss/vars' as *;
+@use 'src/modules/components/scss/mixin' as *;
+@import 'src/modules/components/scss/styles';
+@import './assets/fonts/styles.css';
+
+
+// tailwind
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
