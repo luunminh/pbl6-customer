@@ -10,6 +10,7 @@ const SignIn = React.lazy(() => import('@components/UAMContainer/SignIn'));
 const CreateAccount = React.lazy(() => import('@components/UAMContainer/Customer/CreateAccount'));
 const ForgotPassword = React.lazy(() => import('@components/UAMContainer/ForgotPassword/'));
 const ResetPassword = React.lazy(() => import('@components/UAMContainer/ResetPassword/'));
+const ProductsPage = React.lazy(() => import('./ProductsPage'));
 
 type RouteWrapperProps = {
   isAuthenticated: boolean;
@@ -24,7 +25,7 @@ export const CustomRoute: React.FC<PropsWithChildren<RouteWrapperProps>> = ({
 }) => {
   if (isAuthenticated === null) return <SplashScreen />;
 
-  if ((isAuthenticated && pageRequiredAuth) || (!isAuthenticated && !pageRequiredAuth)) {
+  if (isAuthenticated || !pageRequiredAuth) {
     return <CustomErrorBoundary showErrorMessage>{children}</CustomErrorBoundary>;
   }
 
@@ -34,13 +35,14 @@ export const CustomRoute: React.FC<PropsWithChildren<RouteWrapperProps>> = ({
 };
 
 export const routerGroup = [
-  { path: PATHS.root, element: <OnDevelop />, isRequireAuth: true },
+  { path: PATHS.root, element: <OnDevelop />, isRequireAuth: false },
   { path: PATHS.signIn, element: <SignIn />, isRequireAuth: false },
   { path: PATHS.createAccount, element: <CreateAccount />, isRequireAuth: false },
   { path: PATHS.forgotPassword, element: <ForgotPassword />, isRequireAuth: false },
   { path: PATHS.resetPassword, element: <ResetPassword />, isRequireAuth: false },
+  { path: PATHS.products, element: <ProductsPage />, isRequireAuth: false },
+  { path: PATHS.stores, element: <OnDevelop />, isRequireAuth: false },
   { path: PATHS.order, element: <OnDevelop />, isRequireAuth: true },
-  { path: PATHS.product, element: <OnDevelop />, isRequireAuth: true },
   { path: PATHS.profile, element: <UserProfile />, isRequireAuth: true },
   { path: PATHS.dev, element: <Dev />, isRequireAuth: true },
 ];

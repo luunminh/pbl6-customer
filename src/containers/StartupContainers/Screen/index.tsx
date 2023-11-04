@@ -1,26 +1,26 @@
 import { IRootState } from '@redux/rootReducer';
-import cn from 'classnames';
 import React, { HTMLProps } from 'react';
 import { connect } from 'react-redux';
 import { Stack } from '@mui/material';
-import { MINI_SIDE_BAR_WIDTH, NAVBAR_HEIGHT } from '@appConfig/constants';
+import { NAVBAR_HEIGHT } from '@appConfig/constants';
+import { useLocation } from 'react-router-dom';
+import { PATHS } from '@appConfig/paths';
 const Navbar = React.lazy(() => import('../NavBar'));
 
 const Screen: React.FC<Props> = ({ isAuthenticated, children }) => {
+  const { pathname } = useLocation();
+
+  const isInHome = !pathname.includes(PATHS.signIn) && !pathname.includes(PATHS.createAccount);
+
   return (
     <Stack
-      sx={
-        isAuthenticated
-          ? {
-              paddingTop: `${NAVBAR_HEIGHT}px`,
-              paddingLeft: `${MINI_SIDE_BAR_WIDTH}px`,
-            }
-          : {}
-      }
+      justifyContent="space-between"
+      alignItems="center"
+      gap={3}
+      sx={isInHome ? { paddingTop: `${NAVBAR_HEIGHT}px` } : {}}
     >
-      {isAuthenticated && <Navbar />}
-
-      {children}
+      {isInHome && <Navbar isAuthenticated={isAuthenticated} />}
+      <Stack width="100%">{children}</Stack>
     </Stack>
   );
 };
