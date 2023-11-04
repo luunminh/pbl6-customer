@@ -10,7 +10,11 @@ const Navbar = React.lazy(() => import('../NavBar'));
 const Screen: React.FC<Props> = ({ isAuthenticated, children }) => {
   const { pathname } = useLocation();
 
-  const isInHome = !pathname.includes(PATHS.signIn) && !pathname.includes(PATHS.createAccount);
+  const isInHome =
+    !pathname.includes(PATHS.signIn) &&
+    !pathname.includes(PATHS.createAccount) &&
+    !pathname.includes(PATHS.forgotPassword) &&
+    !pathname.includes(PATHS.resetPassword);
 
   return (
     <Stack
