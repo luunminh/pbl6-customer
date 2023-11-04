@@ -22,10 +22,10 @@ const UserMenu: React.FC<Props> = ({ profile }) => {
   const handleLogOut = () => {
     setDialogContent({
       type: DialogType.YESNO_DIALOG,
-      title: 'Confirm logging out',
+      title: 'Log out',
       data: (
         <Typography fontSize={14} fontWeight={500}>
-          You are logging out from the admin portal. Do you want to continue?
+          Are you sure you want to log out?
         </Typography>
       ),
       maxWidth: 'xs',
@@ -44,6 +44,7 @@ const UserMenu: React.FC<Props> = ({ profile }) => {
     dispatch(setCurrentRole(null));
     dispatch(setProfile(null));
     AuthService.clearToken();
+    navigate(PATHS.root);
   };
 
   const handleChangePassword = () => {
@@ -74,7 +75,7 @@ const UserMenu: React.FC<Props> = ({ profile }) => {
         icon: <AiOutlineLock size={18} />,
       },
       {
-        label: 'Log out',
+        label: 'Log Out',
         onClick: handleLogOut,
         icon: <IoLogOutOutline size={18} />,
       },

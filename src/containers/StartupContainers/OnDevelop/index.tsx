@@ -10,7 +10,7 @@ const OnDevelop: React.FC<Props> = ({
     </>
   ),
 }) => (
-  <Stack alignItems="center" mt="113px">
+  <Stack alignItems="center">
     <Image src={IMAGES.OnDevelopImg} sx={{ height: '400px' }} />
     <Typography fontSize={52}>Oops!...</Typography>
     <Typography>{children}</Typography>

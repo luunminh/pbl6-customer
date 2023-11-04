@@ -5,7 +5,6 @@ export interface IAuthState {
   isAuthenticated?: boolean;
   user: UserProfileType;
   currentRole: UserRole;
-
   isLoggingOut: boolean;
 }
 
