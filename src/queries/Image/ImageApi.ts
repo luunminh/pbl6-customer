@@ -25,8 +25,10 @@ const create = (baseURL = `${appConfig.API_URL}`) => {
   const uploadImage = (body: UploadImagePayload) => {
     const boundary = '----WebKitFormBoundary' + Math.random().toString(36).substring(2);
     let formattedPayload = new FormData();
-    Object.keys(body).map((key) => formattedPayload.append(key, body[key]));
-    return api.post(`/admin/files`, formattedPayload, {
+    const { type, ...payload } = body;
+    console.log('file: ImageApi.ts:29 ~ uploadImage ~ payload:', payload);
+    Object.keys(payload).map((key) => formattedPayload.append(key, body[key]));
+    return api.post(`/${type}`, formattedPayload, {
       withCredentials: false,
       headers: { 'Content-Type': `multipart/form-data; boundary=${boundary}` },
     });

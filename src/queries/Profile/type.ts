@@ -7,6 +7,7 @@ export type UpdateProfilePayload = {
   gender: number | 1 | 0;
   address: string;
   phone: string;
+  avatarUrl: string;
 };
 
 export type ProfileResponse = UserProfileType;

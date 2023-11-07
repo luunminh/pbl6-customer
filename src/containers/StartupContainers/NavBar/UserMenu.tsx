@@ -1,4 +1,4 @@
-import { Avatar, Stack, Typography } from '@mui/material';
+import { Avatar, Button, Stack, Typography } from '@mui/material';
 import * as React from 'react';
 import { TfiAngleDown } from 'react-icons/tfi';
 import { useNavigate } from 'react-router-dom';
@@ -21,22 +21,30 @@ const UserMenu: React.FC<Props> = ({ profile }) => {
 
   const handleLogOut = () => {
     setDialogContent({
-      type: DialogType.YESNO_DIALOG,
+      type: DialogType.CONTENT_DIALOG,
       title: 'Log out',
       data: (
-        <Typography fontSize={14} fontWeight={500}>
-          Are you sure you want to log out?
-        </Typography>
+        <Stack gap={2}>
+          <Typography fontSize={16} fontWeight={500}>
+            Are you sure you want to log out?
+          </Typography>
+          <Stack
+            flexDirection={'row'}
+            alignItems={'center'}
+            justifyContent={'space-between'}
+            pt={2}
+          >
+            <Button onClick={closeModal} variant="outlined" color="inherit">
+              Cancel
+            </Button>
+            <Button onClick={logout} variant="contained" color="primary">
+              Log out
+            </Button>
+          </Stack>
+        </Stack>
       ),
       maxWidth: 'xs',
-      onOk: () => {
-        logout();
-        closeModal();
-      },
-      okText: 'Yes',
     });
-
-    openModal();
   };
 
   const logout = () => {
@@ -44,6 +52,7 @@ const UserMenu: React.FC<Props> = ({ profile }) => {
     dispatch(setCurrentRole(null));
     dispatch(setProfile(null));
     AuthService.clearToken();
+    closeModal();
     navigate(PATHS.root);
   };
 

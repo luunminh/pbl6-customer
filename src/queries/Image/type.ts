@@ -1,6 +1,7 @@
 export type UploadImagePayload = {
   file: File;
-  object: string;
+  object?: string;
+  type: 'admin/files' | 'files/profiles';
 };
 
 export type UploadImageResponse = {
