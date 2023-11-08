@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Stack } from '@mui/material';
+import { Container, Stack } from '@mui/material';
 import { isEmpty, getCapitalize } from '@shared';
 import { PATHS } from '@appConfig/paths';
 import './styles.scss';
@@ -23,13 +23,17 @@ const Breadcrumbs = () => {
     }, []);
 
   return (
-    <Stack flexDirection="row" alignItems="center" gap="10px" className="cmp-breadcrumbs-container">
-      <Link to={PATHS.root}>
-        Home<span style={{ marginLeft: '10px' }}>/</span>
-      </Link>
-      <Stack className="cmp-breadcrumbs" flexDirection="row" alignItems="center" gap="10px">
-        {breadcrumbs.map((breadcrumb) => breadcrumb.crumb)}
-      </Stack>
+    <Stack className="cmp-breadcrumbs-container">
+      <Container maxWidth="xl">
+        <Stack flexDirection="row" alignItems="center" gap="10px">
+          <Link to={PATHS.root}>
+            Home<span style={{ marginLeft: '10px' }}>/</span>
+          </Link>
+          <Stack className="cmp-breadcrumbs" flexDirection="row" alignItems="center" gap="10px">
+            {breadcrumbs.map((breadcrumb) => breadcrumb.crumb)}
+          </Stack>
+        </Stack>
+      </Container>
     </Stack>
   );
 };
