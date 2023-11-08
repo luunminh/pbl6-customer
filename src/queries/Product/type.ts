@@ -17,4 +17,17 @@ export interface ProductResponse {
   category: CategoryResponse;
   createdAt: string;
   updatedAt: string;
+  image: string;
+  productStore?: ProductStore;
 }
+
+export type ProductStore = {
+  id: string;
+  productId: string;
+  storeId: string;
+  amount: number;
+  expirtyDate: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+};

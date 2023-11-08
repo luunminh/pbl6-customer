@@ -87,7 +87,7 @@ const ProductGrid = () => {
     <Stack width={'85%'} gap={5} justifyContent={'center'}>
       {products?.length > 0 ? (
         <>
-          <Stack alignSelf={'end'} paddingRight={3}>
+          <Stack alignSelf={'end'}>
             <Select
               onChange={(name, value) => {
                 setSelectedSortValue(value);
@@ -95,7 +95,7 @@ const ProductGrid = () => {
               }}
               options={sortPriceOptions}
               value={selectedSortValue}
-              placeholder="Price"
+              placeholder="Sort by Price"
               alignEnd
               icon={
                 selectedSortValue?.includes('asc') ? (
