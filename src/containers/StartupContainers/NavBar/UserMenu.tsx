@@ -45,6 +45,7 @@ const UserMenu: React.FC<Props> = ({ profile }) => {
       ),
       maxWidth: 'xs',
     });
+    openModal();
   };
 
   const logout = () => {
@@ -63,7 +64,6 @@ const UserMenu: React.FC<Props> = ({ profile }) => {
       data: <EmailVerify />,
       maxWidth: 'sm',
     });
-
     openModal();
   };
 
@@ -85,7 +85,9 @@ const UserMenu: React.FC<Props> = ({ profile }) => {
       },
       {
         label: 'Log Out',
-        onClick: handleLogOut,
+        onClick: () => {
+          handleLogOut();
+        },
         icon: <IoLogOutOutline size={18} />,
       },
     ],
