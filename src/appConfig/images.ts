@@ -5,6 +5,7 @@ import tableEmptyImg from 'src/assets/images/img-table-empty.svg';
 import uamBG from 'src/assets/images/uamBG.jpg';
 import noImage from 'src/assets/images/no-image.png';
 import noResultsFound from 'src/assets/images/no-results-found.png';
+import storeImage from 'src/assets/images/store-image.jpg';
 
 export const IMAGES = {
   logo,
@@ -14,4 +15,5 @@ export const IMAGES = {
   uamBG,
   noImage,
   noResultsFound,
+  storeImage,
 };

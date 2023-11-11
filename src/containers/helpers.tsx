@@ -11,6 +11,7 @@ const CreateAccount = React.lazy(() => import('@components/UAMContainer/Customer
 const ForgotPassword = React.lazy(() => import('@components/UAMContainer/ForgotPassword/'));
 const ResetPassword = React.lazy(() => import('@components/UAMContainer/ResetPassword/'));
 const ProductsPage = React.lazy(() => import('./ProductsPage'));
+const StoresPage = React.lazy(() => import('./StoresPage'));
 
 type RouteWrapperProps = {
   isAuthenticated: boolean;
@@ -41,7 +42,7 @@ export const routerGroup = [
   { path: PATHS.forgotPassword, element: <ForgotPassword />, isRequireAuth: false },
   { path: PATHS.resetPassword, element: <ResetPassword />, isRequireAuth: false },
   { path: PATHS.products, element: <ProductsPage />, isRequireAuth: false },
-  { path: PATHS.stores, element: <OnDevelop />, isRequireAuth: false },
+  { path: PATHS.stores, element: <StoresPage />, isRequireAuth: false },
   { path: PATHS.order, element: <OnDevelop />, isRequireAuth: true },
   { path: PATHS.profile, element: <UserProfile />, isRequireAuth: true },
   { path: PATHS.dev, element: <Dev />, isRequireAuth: true },
