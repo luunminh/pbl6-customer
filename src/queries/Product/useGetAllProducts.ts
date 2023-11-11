@@ -38,6 +38,7 @@ export function useGetAllProducts(
   const { data: products = [], hasNext, payloadSize, totalRecords } = data || {};
 
   return {
+    params,
     products,
     hasNext,
     payloadSize,

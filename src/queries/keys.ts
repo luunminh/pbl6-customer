@@ -9,6 +9,7 @@ export enum ApiKey {
   CATEGORY = '/category',
   PRODUCT = '/product',
   STORE = '/store',
+  CART = '/cart',
 }
 
 export type QueryOptions<T> = Omit<UseQueryOptions, 'QueryKey'> & { QueryKey: T };

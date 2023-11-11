@@ -20,6 +20,8 @@
     "paths": {
       "@shared": ["src/modules/shared"],
       "@shared/*": ["src/modules/shared/*"],
+      "@customerShared": ["src/containers/shared"],
+      "@customerShared/*": ["src/containers/shared*"],
       "@components": ["src/modules/components"],
       "@components/*": ["src/modules/components/*"],
       // "@modules": ["src/modules"],

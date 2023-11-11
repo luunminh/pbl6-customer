@@ -12,18 +12,6 @@ export const getShortName = ({ firstName = '', lastName = '' }) => {
   return `${firstName[0]}${lastName[0]}`;
 };
 
-// TODO mock data -> change later
-export const storeOptions = [
-  {
-    label: 'Lien Chieu, Da Nang',
-    value: 'Store 1',
-  },
-  {
-    label: 'Thanh Khe, Da Nang',
-    value: 'Store 2',
-  },
-];
-
 export type NavBarItemType = {
   label: string;
   path: string;

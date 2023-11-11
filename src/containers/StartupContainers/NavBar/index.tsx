@@ -1,4 +1,4 @@
-import React, { HTMLProps, useState } from 'react';
+import React, { HTMLProps, useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
   AppBar,
@@ -9,27 +9,49 @@ import {
   Badge,
   Button,
   Container,
+  Tooltip,
 } from '@mui/material';
 import { IoCartOutline, IoLocationOutline } from 'react-icons/io5';
 import { IMAGES } from '@appConfig/images';
 import { PATHS } from '@appConfig/paths';
 import UserMenu from './UserMenu';
-import { Image, COLOR_CODE, Select } from '@components';
+import { Image, COLOR_CODE, DialogContext, DialogType } from '@components';
 import { useGetProfile } from '@queries/Profile/useGetProfile';
 import LoadingContainer from '@components/LoadingContainer';
 import { IRootState } from '@redux/rootReducer';
-import { storeOptions, navBarItems } from './helpers';
+import { navBarItems } from './helpers';
 import SearchBar from 'src/components/SearchBar';
+import { useGetAllStores } from '@queries/Store';
+import { StoreService, isEmpty } from '@shared';
+import { getSelectedStoreLocation } from '@customerShared';
+import { useCallback } from 'react';
+import SelectStoreModal from '../SelectStoreModal';
+import { useGetCart } from '@queries';
 
 const Navbar: React.FC<Props> = ({ isAuthenticated }) => {
+  const { openModal, setDialogContent } = useContext(DialogContext);
+
   const { profile, isLoading } = useGetProfile({});
 
-  // TODO set in localStorage later
-  const [selectedStore, setSelectedStore] = useState(storeOptions[0].value);
+  const { stores } = useGetAllStores();
+  const { cart } = useGetCart({
+    storeId: StoreService.getValue(),
+  });
 
   const navigate = useNavigate();
-
   const { pathname } = useLocation();
+
+  const handleSelectStore = useCallback(() => {
+    setDialogContent({
+      type: DialogType.CONTENT_DIALOG,
+      title: 'Choose a store location',
+      data: <SelectStoreModal />,
+      maxWidth: 'md',
+    });
+
+    openModal();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (isLoading) {
     return <LoadingContainer />;
@@ -66,23 +88,33 @@ const Navbar: React.FC<Props> = ({ isAuthenticated }) => {
                 <SearchBar placeholder="Search for items..." />
               </Stack>
               <Stack direction="row" justifyItems="flex-end" alignItems="center" gap={5}>
-                {/* TODO: Change this Select to MuiTextField (in "readonly" state) 
-              so that clicking on it opens a dialog to choose the store location. */}
-                <Select
-                  onChange={(name, value) => {
-                    setSelectedStore(value);
-                  }}
-                  options={storeOptions}
-                  value={selectedStore}
-                  defaultValue={selectedStore}
-                  placeholder="Choose a store"
-                  icon={<IoLocationOutline color={COLOR_CODE.PRIMARY_500} size="18px" />}
-                  isClearable={false}
-                />
-                <IconButton aria-label="cart" sx={{ color: COLOR_CODE.GREY_800 }}>
-                  <Badge badgeContent={1} color="primary">
-                    <IoCartOutline size="24px" />
-                  </Badge>
+                <Tooltip title="Click to choose a Store" arrow>
+                  <Button
+                    onClick={handleSelectStore}
+                    sx={{
+                      pr: 7,
+                      fontSize: 14,
+                      borderRadius: 2,
+                      textTransform: 'initial',
+                      border: `1px solid ${COLOR_CODE.GREY_300}`,
+                    }}
+                    startIcon={<IoLocationOutline color={COLOR_CODE.PRIMARY_500} size={18} />}
+                  >
+                    {!isEmpty(getSelectedStoreLocation(stores))
+                      ? getSelectedStoreLocation(stores)
+                      : 'Select a Store'}
+                  </Button>
+                </Tooltip>
+                <IconButton
+                  aria-label="cart"
+                  sx={{ color: COLOR_CODE.GREY_800 }}
+                  onClick={() => navigate(PATHS.cart)}
+                >
+                  {
+                    <Badge badgeContent={(isAuthenticated && cart?.length) || '0'} color="primary">
+                      <IoCartOutline size="24px" />
+                    </Badge>
+                  }
                 </IconButton>
                 {isAuthenticated ? (
                   <UserMenu profile={profile} />
