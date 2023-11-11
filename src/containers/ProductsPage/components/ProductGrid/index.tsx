@@ -5,7 +5,7 @@ import { TbSortAscending, TbSortDescending } from 'react-icons/tb';
 import { COLOR_CODE, Image, Loading, Select } from '@components';
 import { ProductListParams, useGetAllProducts } from '@queries/Product';
 import { IMAGES } from '@appConfig/images';
-import { isEmpty } from '@shared';
+import { StoreService, isEmpty } from '@shared';
 import CustomPagination from '../CustomPagination';
 import ProductItem from '../ProductItem';
 import { getInitialGridState, sortPriceOptions } from './helpers';
@@ -72,7 +72,10 @@ const ProductGrid = () => {
   const { products, totalRecords, setParams, isFetching } = useGetAllProducts();
 
   const handleGetProductList = (params: ProductListParams) => {
-    setParams({ ...params });
+    const storeId = StoreService.getValue();
+    if (storeId) {
+      setParams({ ...params, storeId });
+    } else setParams({ ...params });
   };
 
   if (isFetching) {

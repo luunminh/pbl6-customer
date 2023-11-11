@@ -1,13 +1,20 @@
 export const PATHS = {
   root: '/',
   dev: '/dev',
+
+  // UAM
   profile: '/profile',
-  products: '/products',
   stores: '/stores',
-  order: '/order',
   signIn: '/login',
   logout: '/logout',
   forgotPassword: '/forgot-password',
   resetPassword: '/reset-password',
   createAccount: '/signup',
+
+  // product
+  products: '/products',
+  order: '/order',
+
+  // cart
+  cart: '/cart',
 };

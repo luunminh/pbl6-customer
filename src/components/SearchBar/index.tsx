@@ -31,15 +31,23 @@ const SearchBar: React.FC<Props> = ({ searchText, placeholder = 'Search' }) => {
   };
 
   return (
-    <MuiTextField
-      size="small"
-      placeholder={placeholder}
-      value={searchValue}
-      onChange={handleInputChange}
-      icon={<IoSearchOutline size="18px" />}
-      iconType="button"
-      onIconClick={handleSearch}
-    />
+    <form
+      autoComplete="off"
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSearch();
+      }}
+    >
+      <MuiTextField
+        size="small"
+        placeholder={placeholder}
+        value={searchValue}
+        onChange={handleInputChange}
+        icon={<IoSearchOutline size="18px" />}
+        iconType="button"
+        onIconClick={handleSearch}
+      />
+    </form>
   );
 };
 

@@ -22,6 +22,7 @@ export default defineConfig({
       '@appConfig': pathResolve('src/appConfig'),
       '@redux': pathResolve('src/redux'),
       '@queries': pathResolve('src/queries'),
+      '@customerShared': pathResolve('src/containers/shared'),
       // '@modules': pathResolve('src/modules'),
       src: pathResolve('src'),
       './runtimeConfig': './runtimeConfig.browser',

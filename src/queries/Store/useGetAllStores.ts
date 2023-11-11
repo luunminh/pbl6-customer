@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { UseQueryOptions, useQuery, useQueryClient } from '@tanstack/react-query';
-import { PaginationResponseType, isEmpty, responseWrapper } from '@shared';
+import { Callback, PaginationResponseType, isEmpty, responseWrapper } from '@shared';
 import { ApiKey } from '@queries/keys';
 import { StoreListParams, StoreResponse } from './type';
 import { StoreApi } from '.';
 
 export function useGetAllStores(
-  options?: UseQueryOptions<PaginationResponseType<StoreResponse>, Error>,
+  options?: UseQueryOptions<PaginationResponseType<StoreResponse>, Error> & {
+    onSuccessCallback?: Callback;
+    onErrorCallback?: Callback;
+  },
 ) {
   const [params, setParams] = useState<StoreListParams>({ skip: 0 });
 
@@ -16,6 +19,7 @@ export function useGetAllStores(
     isError,
     isFetching,
     refetch: onGetAllStores,
+    isSuccess,
   } = useQuery<PaginationResponseType<StoreResponse>, Error>([ApiKey.STORE, params], {
     queryFn: (query) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -27,6 +31,24 @@ export function useGetAllStores(
     enabled: !isEmpty(params),
     ...options,
   });
+
+  useEffect(() => {
+    if (data && isSuccess) {
+      if (options?.onSuccessCallback) {
+        options.onSuccessCallback(data);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      if (options?.onErrorCallback) {
+        options.onErrorCallback(error);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isError]);
 
   const queryClient = useQueryClient();
 
@@ -45,5 +67,6 @@ export function useGetAllStores(
     onGetAllStores,
     setParams,
     handleInvalidateStoreList,
+    params,
   };
 }

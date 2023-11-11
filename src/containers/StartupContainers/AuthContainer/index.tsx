@@ -15,8 +15,6 @@ const AuthContainer: React.FC<Props> = ({
       handleCheckRole(data);
     },
     onErrorCallback: () => {
-      isAuthenticated !== null &&
-        Toastify.error('Failed to get profile. Please try to login again!');
       clearAuth();
     },
   });
