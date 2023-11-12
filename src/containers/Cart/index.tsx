@@ -22,7 +22,7 @@ const Cart = () => {
             style={{ width: '210px', color: COLOR_CODE.GREY_600, fontWeight: 400, border: 'none' }}
             variant="outlined"
           >
-            Continue to Shopping
+            Continue shopping
           </Button>
         </Stack>
         <Grid container padding={3} spacing={4}>

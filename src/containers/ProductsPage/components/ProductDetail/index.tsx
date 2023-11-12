@@ -18,16 +18,22 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { IoRemoveOutline } from 'react-icons/io5';
 import { IRootState } from '@redux/store';
 import { useSelector } from 'react-redux';
-import { CartWarning, SelectStoreModal } from 'src/containers/StartupContainers';
+import { SelectStoreModal } from 'src/containers/StartupContainers';
+import { PATHS } from '@appConfig/paths';
+import { useNavigate } from 'react-router-dom';
+
 const ProductDetail = ({ id }: Props) => {
+  const navigate = useNavigate();
+
   const [quantity, setQuantity] = useState(1);
 
   const { setDialogContent, openModal, closeModal } = useContext(DialogContext);
+
   const isAuthenticated = useSelector((state: IRootState) => state.auth.isAuthenticated);
 
   const { addProduct, isLoading: isAddingToCart } = useAddProductToCart({
     onSuccess() {
-      Toastify.success('Added successfully!');
+      Toastify.success('Added successfully to your cart!');
     },
     onError(error) {
       Toastify.error(error.message);
@@ -58,15 +64,21 @@ const ProductDetail = ({ id }: Props) => {
   const { name, image, amount, description, price } = productDetail || {};
 
   const isProductExistInCart =
-    cart.find(({ product }) => product.id === id)?.quantity + quantity > amount;
+    cart?.find(({ product }) => product.id === id)?.quantity + quantity > amount;
 
   const handleAddToCart = useCallback(() => {
     if (!isAuthenticated) {
       setDialogContent({
-        type: DialogType.CONTENT_DIALOG,
-        title: 'Warning',
-        data: <CartWarning />,
+        type: DialogType.YESNO_DIALOG,
         maxWidth: 'xs',
+        contentText: 'Login Required',
+        subContentText: 'You have to login to access this feature!',
+        showIcon: true,
+        okText: 'Login now',
+        onOk: () => {
+          navigate(PATHS.signIn);
+          closeModal();
+        },
       });
       return openModal();
     }
@@ -81,10 +93,10 @@ const ProductDetail = ({ id }: Props) => {
         maxWidth: 'xs',
         contentText: '',
         subContentText:
-          'This product is already in your cart. You cannot add more quantity to the product as it would exceed the available stock.',
+          'This product is already in your cart. You cannot add more because it exceeds the available stock.',
         showIcon: true,
         isWarning: true,
-        okText: 'Got it',
+        okText: 'OK',
         onOk: () => {
           closeModal();
         },
@@ -113,14 +125,14 @@ const ProductDetail = ({ id }: Props) => {
         <Grid item xs={6}>
           <Stack justifyItems={'center'} gap={3}>
             <Stack gap={'28px'}>
-              <Stack>
+              <Stack spacing={2}>
                 <Typography fontSize={38} color={COLOR_CODE.GREY_800} fontWeight={700}>
                   {name}
                 </Typography>
                 {isDisabled && (
                   <Typography color={COLOR_CODE.RED_500}>
-                    This product is currently unavailable at your store location, or the selected
-                    quantity exceeds the available stock.
+                    This product is currently out of stock at the selected store, or the quantity
+                    you want to add to cart exceeds the available stock.
                   </Typography>
                 )}
               </Stack>
@@ -145,7 +157,7 @@ const ProductDetail = ({ id }: Props) => {
                 </IconButton>
               </Tooltip>
               <Typography variant="h2">{quantity}</Typography>
-              <Tooltip title={`Increase`} arrow>
+              <Tooltip title={'Increase'} arrow>
                 <IconButton
                   style={{ backgroundColor: COLOR_CODE.PRIMARY }}
                   onClick={() => setQuantity((prev) => prev + 1)}

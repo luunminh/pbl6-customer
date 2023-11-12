@@ -1,4 +1,4 @@
-import React, { HTMLProps, useContext } from 'react';
+import React, { HTMLProps, useContext, useMemo } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
   AppBar,
@@ -34,11 +34,21 @@ const Navbar: React.FC<Props> = ({ isAuthenticated }) => {
   const { profile, isLoading } = useGetProfile({});
 
   const { stores } = useGetAllStores();
+
   const { cart } = useGetCart({
     storeId: StoreService.getValue(),
   });
 
+  const cartTotalItems = useMemo(
+    () =>
+      cart
+        ?.filter((product) => product.inOfStock)
+        .reduce((total, curProduct) => total + curProduct.quantity, 0),
+    [cart],
+  );
+
   const navigate = useNavigate();
+
   const { pathname } = useLocation();
 
   const handleSelectStore = useCallback(() => {
@@ -88,7 +98,7 @@ const Navbar: React.FC<Props> = ({ isAuthenticated }) => {
                 <SearchBar placeholder="Search for items..." />
               </Stack>
               <Stack direction="row" justifyItems="flex-end" alignItems="center" gap={5}>
-                <Tooltip title="Click to choose a Store" arrow>
+                <Tooltip title="Click to choose a store" arrow>
                   <Button
                     onClick={handleSelectStore}
                     sx={{
@@ -97,12 +107,13 @@ const Navbar: React.FC<Props> = ({ isAuthenticated }) => {
                       borderRadius: 2,
                       textTransform: 'initial',
                       border: `1px solid ${COLOR_CODE.GREY_300}`,
+                      fontWeight: 500,
                     }}
                     startIcon={<IoLocationOutline color={COLOR_CODE.PRIMARY_500} size={18} />}
                   >
                     {!isEmpty(getSelectedStoreLocation(stores))
                       ? getSelectedStoreLocation(stores)
-                      : 'Select a Store'}
+                      : 'Select a store'}
                   </Button>
                 </Tooltip>
                 <IconButton
@@ -111,7 +122,10 @@ const Navbar: React.FC<Props> = ({ isAuthenticated }) => {
                   onClick={() => navigate(PATHS.cart)}
                 >
                   {
-                    <Badge badgeContent={(isAuthenticated && cart?.length) || '0'} color="primary">
+                    <Badge
+                      badgeContent={(isAuthenticated && cartTotalItems) || '0'}
+                      color="primary"
+                    >
                       <IoCartOutline size="24px" />
                     </Badge>
                   }
