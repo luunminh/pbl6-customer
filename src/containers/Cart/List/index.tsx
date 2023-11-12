@@ -23,10 +23,8 @@ import {
   useDeleteCart,
 } from '@queries';
 import { StoreService, Toastify, formatMoney, isEmpty } from '@shared';
-import LoadingContainer from '@components/LoadingContainer';
-import { IoAddCircleOutline } from 'react-icons/io5';
-import { MdOutlineRemoveCircleOutline } from 'react-icons/md';
-import { useCallback, useContext } from 'react';
+import { IoAddCircle, IoRemoveCircleOutline } from 'react-icons/io5';
+import { useCallback, useContext, useMemo } from 'react';
 import { BiTrash } from 'react-icons/bi';
 const CartList = () => {
   const { openModal, closeModal, setDialogContent } = useContext(DialogContext);
@@ -41,6 +39,14 @@ const CartList = () => {
     refetchOnMount: true,
     refetchOnWindowFocus: true,
   });
+
+  const cartTotalItems = useMemo(
+    () =>
+      cart
+        ?.filter((product) => product.inOfStock)
+        .reduce((total, curProduct) => total + curProduct.quantity, 0),
+    [cart],
+  );
 
   const { addProduct: increaseProduct, isLoading: isUpdateProductQuantity } = useAddProductToCart({
     onSuccess() {
@@ -99,7 +105,7 @@ const CartList = () => {
       type: DialogType.YESNO_DIALOG,
       maxWidth: 'xs',
       contentText: 'Remove all product',
-      subContentText: 'Are you sure you want to remove all current products?',
+      subContentText: 'Are you sure you want to remove all current products in your cart?',
       showIcon: true,
       isWarning: true,
       okText: 'Yes',
@@ -127,7 +133,7 @@ const CartList = () => {
         <TableCell>
           <Stack flexDirection={'row'} alignItems={'center'} gap={1}>
             <Tooltip
-              title={`${quantity === 1 ? 'Remove this product into your cart' : 'Decrease'}`}
+              title={`${quantity === 1 ? 'Remove this product from your cart' : 'Decrease'}`}
               arrow
             >
               <IconButton
@@ -137,7 +143,7 @@ const CartList = () => {
                   } else handleChangeProductQuantity(productId, '1', QuantityOptions.DECREASE);
                 }}
               >
-                <MdOutlineRemoveCircleOutline size={25} />
+                <IoRemoveCircleOutline size={25} />
               </IconButton>
             </Tooltip>
 
@@ -155,7 +161,7 @@ const CartList = () => {
                     handleChangeProductQuantity(item.productId, '1', QuantityOptions.INCREASE)
                   }
                 >
-                  <IoAddCircleOutline size={25} />
+                  <IoAddCircle size={25} color={COLOR_CODE.PRIMARY_500} />
                 </IconButton>
               </span>
             </Tooltip>
@@ -179,16 +185,14 @@ const CartList = () => {
           </Stack>
         </TableCell>
         <TableCell style={{ opacity: 0.5 }} />
-        <TableCell align="center" style={{ opacity: 0.5 }}>
-          {quantity}
-        </TableCell>
+        <TableCell style={{ opacity: 0.5 }} />
         <TableCell>
-          <Typography color={COLOR_CODE.DANGER}>Out of Stock</Typography>
+          <Typography color={COLOR_CODE.DANGER}>Out of stock</Typography>
         </TableCell>
         <TableCell>
           <Tooltip title="Remove" arrow>
             <IconButton onClick={() => deleteProductCart({ productId: item.productId })}>
-              <BiTrash size={20} color={COLOR_CODE.RED_400} />
+              <BiTrash size={20} color={COLOR_CODE.DANGER} />
             </IconButton>
           </Tooltip>
         </TableCell>
@@ -237,8 +241,8 @@ const CartList = () => {
         </Table>
       </TableContainer>
       <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'}>
-        <Typography color={COLOR_CODE.GREY_600}>{`Total: ${cart?.length} ${
-          cart?.length <= 1 ? 'item' : 'items'
+        <Typography color={COLOR_CODE.GREY_600}>{`Total: ${cartTotalItems} ${
+          cartTotalItems <= 1 ? 'item' : 'items'
         }`}</Typography>
         <Button
           onClick={handleDeleteCart}

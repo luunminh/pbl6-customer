@@ -4,6 +4,7 @@ import { useGetCart } from '@queries';
 import { StoreService, formatMoney } from '@shared';
 import { BiSolidDiscount } from 'react-icons/bi';
 import { useMemo } from 'react';
+
 const OrderSummary = () => {
   const { cart } = useGetCart({
     storeId: StoreService.getValue(),
@@ -13,7 +14,7 @@ const OrderSummary = () => {
     () =>
       cart
         .filter((product) => product.inOfStock)
-        .reduce((total, curProduct) => total + curProduct.quantity * curProduct.price, 0),
+        .reduce((total, curProduct) => total + curProduct.price, 0),
     [cart],
   );
 

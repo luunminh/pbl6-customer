@@ -59,7 +59,7 @@ const SelectStoreModal = () => {
         >
           <Avatar src={IMAGES.bigLogo} sx={{ width: 30, height: 30 }} />
           <Stack>
-            <Typography fontWeight={400}>MALT Store</Typography>
+            <Typography fontWeight={600}>MALT Store</Typography>
             <Typography>{`Address: ${store.address}`}</Typography>
           </Stack>
         </Card>
@@ -75,8 +75,8 @@ const SelectStoreModal = () => {
         <IoLocationOutline color={COLOR_CODE.PRIMARY_500} size={18} />
         <Typography variant="h5" fontWeight={700} color={COLOR_CODE.PRIMARY}>
           {!isEmpty(selectedStore)
-            ? `Current Store: ${getSelectedStoreLocation(stores, selectedStore)}`
-            : 'Select a Store'}
+            ? `Current store: ${getSelectedStoreLocation(stores, selectedStore)}`
+            : 'Select a store'}
         </Typography>
       </Stack>
       <Divider sx={{ mt: 1 }} />

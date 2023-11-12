@@ -8,14 +8,16 @@ import { StoreService, Toastify, formatMoney, isEmpty } from '@shared';
 import { useSelector } from 'react-redux';
 import { IRootState } from '@redux/store';
 import { DialogContext } from '@components';
-import { CartWarning, SelectStoreModal } from 'src/containers/StartupContainers';
+import { SelectStoreModal } from 'src/containers/StartupContainers';
 import { useAddProductToCart, useGetCart } from '@queries/Cart';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '@appConfig/paths';
 
 const ProductItem = ({ product }: Props) => {
   const isAuthenticated = useSelector((state: IRootState) => state.auth.isAuthenticated);
+
   const { setDialogContent, openModal, closeModal } = useContext(DialogContext);
+
   const navigate = useNavigate();
 
   const productAmount = product?.productStore?.amount || product.amount;
@@ -23,7 +25,7 @@ const ProductItem = ({ product }: Props) => {
   const { cart, handleInvalidateCart } = useGetCart({ storeId: StoreService.getValue() });
 
   const isProductExistInCart =
-    cart.find(({ product: cartProduct }) => cartProduct.id === product.id)?.quantity + 1 >
+    cart?.find(({ product: cartProduct }) => cartProduct.id === product.id)?.quantity + 1 >
     productAmount;
 
   const { addProduct, isLoading } = useAddProductToCart({
@@ -39,10 +41,16 @@ const ProductItem = ({ product }: Props) => {
   const handleAddToCart = useCallback(() => {
     if (!isAuthenticated) {
       setDialogContent({
-        type: DialogType.CONTENT_DIALOG,
-        title: 'Warning',
-        data: <CartWarning />,
+        type: DialogType.YESNO_DIALOG,
         maxWidth: 'xs',
+        contentText: 'Login Required',
+        subContentText: 'You have to login to access this feature!',
+        showIcon: true,
+        okText: 'Login now',
+        onOk: () => {
+          navigate(PATHS.signIn);
+          closeModal();
+        },
       });
       return openModal();
     }
@@ -57,10 +65,10 @@ const ProductItem = ({ product }: Props) => {
         maxWidth: 'xs',
         contentText: '',
         subContentText:
-          'This product is already in your cart. You cannot add more quantity to the product as it would exceed the available stock.',
+          'This product is already in your cart. You cannot add more because it exceeds the available stock.',
         showIcon: true,
         isWarning: true,
-        okText: 'Got it',
+        okText: 'OK',
         onOk: () => {
           closeModal();
         },
@@ -108,7 +116,12 @@ const ProductItem = ({ product }: Props) => {
               {product.name}
             </Typography>
           </Tooltip>
-          <Typography variant="h6">Available: {productAmount} items</Typography>
+          <Typography
+            variant="h6"
+            color={productAmount > 0 ? COLOR_CODE.GREY_700 : COLOR_CODE.DANGER}
+          >
+            {productAmount > 0 ? `Available: ${productAmount} items` : 'Out of stock'}
+          </Typography>
         </Stack>
         <Button
           fullWidth
