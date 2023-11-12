@@ -13,7 +13,7 @@ const OrderSummary = () => {
   const subTotal = useMemo(
     () =>
       cart
-        .filter((product) => product.inOfStock)
+        ?.filter((product) => product.inOfStock)
         .reduce((total, curProduct) => total + curProduct.price, 0),
     [cart],
   );
