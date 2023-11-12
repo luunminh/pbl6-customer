@@ -1,11 +1,15 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { Container, Stack } from '@mui/material';
 import { isEmpty, getCapitalize } from '@shared';
 import { PATHS } from '@appConfig/paths';
+import { useGetProductDetail } from '@queries';
 import './styles.scss';
 
 const Breadcrumbs = () => {
+  const { id } = useParams();
   const { pathname } = useLocation();
+
+  const { productDetail } = useGetProductDetail({ id });
 
   const breadcrumbs = pathname
     .split('/')
@@ -16,7 +20,9 @@ const Breadcrumbs = () => {
         : `/${currCrumb}`;
       const crumb = (
         <div className="cmp-breadcrumbs__crumb" key={currCrumb}>
-          <Link to={currentLink}>{getCapitalize(currCrumb)}</Link>
+          <Link to={currentLink}>{`${
+            currCrumb.includes(id) ? productDetail?.name : getCapitalize(currCrumb)
+          }`}</Link>
         </div>
       );
       return [...preCrumb, { link: currentLink, crumb }];

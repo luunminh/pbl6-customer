@@ -44,6 +44,7 @@ export const routerGroup = [
   { path: PATHS.forgotPassword, element: <ForgotPassword />, isRequireAuth: false },
   { path: PATHS.resetPassword, element: <ResetPassword />, isRequireAuth: false },
   { path: PATHS.products, element: <ProductsPage />, isRequireAuth: false },
+  { path: PATHS.productDetail, element: <ProductsPage />, isRequireAuth: false },
   { path: PATHS.stores, element: <StoresPage />, isRequireAuth: false },
   { path: PATHS.order, element: <OnDevelop />, isRequireAuth: true },
   { path: PATHS.profile, element: <UserProfile />, isRequireAuth: true },

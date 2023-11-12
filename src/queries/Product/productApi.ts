@@ -1,7 +1,7 @@
 import axios from 'axios';
 import apisauce from 'apisauce';
 import appConfig from 'src/appConfig';
-import { ProductListParams } from './type';
+import { ProductDetailParams, ProductListParams } from './type';
 import { AuthService, stringify } from '@shared';
 import { ApiKey } from '@queries/keys';
 
@@ -29,8 +29,14 @@ const create = (baseURL = `${appConfig.API_URL}`) => {
     return api.get(`${ApiKey.PRODUCT}?${queryString}`);
   };
 
+  const getProductDetail = (id: string, storeId: string) => {
+    const queryString = stringify({ storeId });
+    return api.get(`${ApiKey.PRODUCT}/${id}?${queryString}`);
+  };
+
   return {
     getProductList,
+    getProductDetail,
   };
 };
 

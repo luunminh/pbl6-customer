@@ -29,8 +29,11 @@ const create = (baseURL = `${appConfig.API_URL}`) => {
     return api.get(`${ApiKey.CATEGORY}?${queryString}`);
   };
 
+  const getCategoryDetail = (id: string) => api.get(`${ApiKey.CATEGORY}/${id}`);
+
   return {
     getCategoryList,
+    getCategoryDetail,
   };
 };
 
