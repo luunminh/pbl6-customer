@@ -39,7 +39,13 @@ const Navbar: React.FC<Props> = ({ isAuthenticated }) => {
     storeId: StoreService.getValue(),
   });
 
-  const cartTotalItems = useMemo(() => cart?.filter((product) => product.inOfStock).length, [cart]);
+  const cartTotalItems = useMemo(
+    () =>
+      cart
+        ?.filter((product) => product.inOfStock)
+        .reduce((total, curProduct) => total + curProduct.quantity, 0),
+    [cart],
+  );
 
   const navigate = useNavigate();
 
