@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { QuantityOptions, cartTableHeadList } from './helpers';
 import { StyledTableCell } from '@customerShared';
-import { COLOR_CODE, DialogContext, DialogType, EmptyTable, Image } from '@components';
+import { COLOR_CODE, DialogContext, DialogType, EmptyTable, Image, Loading } from '@components';
 import {
   useGetCart,
   useDecreaseProductCart,
@@ -25,7 +25,7 @@ import {
 import { StoreService, Toastify, formatMoney, isEmpty } from '@shared';
 import LoadingContainer from '@components/LoadingContainer';
 import { IoAddCircleOutline } from 'react-icons/io5';
-import { MdOutlineRemove, MdOutlineRemoveCircleOutline } from 'react-icons/md';
+import { MdOutlineRemoveCircleOutline } from 'react-icons/md';
 import { useCallback, useContext } from 'react';
 import { BiTrash } from 'react-icons/bi';
 const CartList = () => {
@@ -113,7 +113,7 @@ const CartList = () => {
   }, []);
 
   const renderTableRow = useCallback((item: Cart) => {
-    const { id, product, productId, quantity, price, inOfStock, image } = item || {};
+    const { id, product, productId, quantity, price: totalPrice, inOfStock, image } = item || {};
 
     return inOfStock ? (
       <TableRow key={id}>
@@ -123,33 +123,49 @@ const CartList = () => {
             <Typography>{product?.name}</Typography>
           </Stack>
         </TableCell>
-        <TableCell>{formatMoney(price)}</TableCell>
+        <TableCell>{formatMoney(product.price)}</TableCell>
         <TableCell>
           <Stack flexDirection={'row'} alignItems={'center'} gap={1}>
-            <IconButton
-              onClick={() => {
-                if (quantity === 1) {
-                  deleteProductCart({ productId });
-                } else handleChangeProductQuantity(productId, '1', QuantityOptions.DECREASE);
-              }}
+            <Tooltip
+              title={`${quantity === 1 ? 'Remove this product into your cart' : 'Decrease'}`}
+              arrow
             >
-              <MdOutlineRemoveCircleOutline size={25} />
-            </IconButton>
-            <Typography>{item?.quantity || 0}</Typography>
-            <IconButton
-              onClick={() =>
-                handleChangeProductQuantity(item.productId, '1', QuantityOptions.INCREASE)
-              }
+              <IconButton
+                onClick={() => {
+                  if (quantity === 1) {
+                    deleteProductCart({ productId });
+                  } else handleChangeProductQuantity(productId, '1', QuantityOptions.DECREASE);
+                }}
+              >
+                <MdOutlineRemoveCircleOutline size={25} />
+              </IconButton>
+            </Tooltip>
+
+            <Typography>{quantity || 0}</Typography>
+            <Tooltip
+              title={`${
+                quantity === product.amount ? 'Maximum available product quantity' : 'Increase'
+              }`}
+              arrow
             >
-              <IoAddCircleOutline size={25} />
-            </IconButton>
+              <span>
+                <IconButton
+                  disabled={quantity === product.amount}
+                  onClick={() =>
+                    handleChangeProductQuantity(item.productId, '1', QuantityOptions.INCREASE)
+                  }
+                >
+                  <IoAddCircleOutline size={25} />
+                </IconButton>
+              </span>
+            </Tooltip>
           </Stack>
         </TableCell>
-        <TableCell>{formatMoney(item?.product?.price * item?.quantity || 0)}</TableCell>
+        <TableCell>{formatMoney(totalPrice || 0)}</TableCell>
         <TableCell>
           <Tooltip title="Remove" arrow>
             <IconButton onClick={() => deleteProductCart({ productId: item.productId })}>
-              <MdOutlineRemove size={30} color={COLOR_CODE.GREY_500} />
+              <BiTrash size={20} color={COLOR_CODE.GREY_600} />
             </IconButton>
           </Tooltip>
         </TableCell>
@@ -163,14 +179,16 @@ const CartList = () => {
           </Stack>
         </TableCell>
         <TableCell style={{ opacity: 0.5 }} />
-        <TableCell style={{ opacity: 0.5 }} />
+        <TableCell align="center" style={{ opacity: 0.5 }}>
+          {quantity}
+        </TableCell>
         <TableCell>
           <Typography color={COLOR_CODE.DANGER}>Out of Stock</Typography>
         </TableCell>
         <TableCell>
           <Tooltip title="Remove" arrow>
             <IconButton onClick={() => deleteProductCart({ productId: item.productId })}>
-              <MdOutlineRemove size={30} color={COLOR_CODE.GREY_500} />
+              <BiTrash size={20} color={COLOR_CODE.RED_400} />
             </IconButton>
           </Tooltip>
         </TableCell>
@@ -187,7 +205,11 @@ const CartList = () => {
     isDeletingProductCart;
 
   if (isLoading) {
-    return <LoadingContainer />;
+    return (
+      <Stack alignItems={'center'} mt={6}>
+        <Loading size="normal" variant="primary" />;
+      </Stack>
+    );
   }
 
   return (

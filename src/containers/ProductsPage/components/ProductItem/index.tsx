@@ -10,14 +10,21 @@ import { IRootState } from '@redux/store';
 import { DialogContext } from '@components';
 import { CartWarning, SelectStoreModal } from 'src/containers/StartupContainers';
 import { useAddProductToCart, useGetCart } from '@queries/Cart';
+import { useNavigate } from 'react-router-dom';
+import { PATHS } from '@appConfig/paths';
 
 const ProductItem = ({ product }: Props) => {
   const isAuthenticated = useSelector((state: IRootState) => state.auth.isAuthenticated);
-  const { setDialogContent, openModal } = useContext(DialogContext);
+  const { setDialogContent, openModal, closeModal } = useContext(DialogContext);
+  const navigate = useNavigate();
 
   const productAmount = product?.productStore?.amount || product.amount;
 
-  const { handleInvalidateCart } = useGetCart({ storeId: StoreService.getValue() });
+  const { cart, handleInvalidateCart } = useGetCart({ storeId: StoreService.getValue() });
+
+  const isProductExistInCart =
+    cart.find(({ product: cartProduct }) => cartProduct.id === product.id)?.quantity + 1 >
+    productAmount;
 
   const { addProduct, isLoading } = useAddProductToCart({
     onSuccess() {
@@ -41,12 +48,27 @@ const ProductItem = ({ product }: Props) => {
     }
 
     if (isEmpty(StoreService.getValue())) {
-      handleSelectStore();
-    } else {
-      addProduct({ productId: product.id, quantity: '1' });
+      return handleSelectStore();
     }
+
+    if (isProductExistInCart) {
+      setDialogContent({
+        type: DialogType.YESNO_DIALOG,
+        maxWidth: 'xs',
+        contentText: '',
+        subContentText:
+          'This product is already in your cart. You cannot add more quantity to the product as it would exceed the available stock.',
+        showIcon: true,
+        isWarning: true,
+        okText: 'Got it',
+        onOk: () => {
+          closeModal();
+        },
+      });
+      openModal();
+    } else addProduct({ productId: product.id, quantity: '1' });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated]);
+  }, [isAuthenticated, isProductExistInCart, product]);
 
   const handleSelectStore = useCallback(() => {
     setDialogContent({
@@ -61,7 +83,10 @@ const ProductItem = ({ product }: Props) => {
   }, []);
 
   return (
-    <Card sx={{ width: '300px', height: '380px', padding: '20px' }}>
+    <Card
+      sx={{ width: '300px', height: '380px', padding: '20px' }}
+      onClick={() => navigate(`${PATHS.products}/${product.id}`)}
+    >
       <Stack justifyContent="space-between" alignItems="center" gap={4} flexShrink={1}>
         <CardMedia
           sx={{ height: '150px', width: '150px' }}
@@ -75,8 +100,8 @@ const ProductItem = ({ product }: Props) => {
             <Typography
               variant="h5"
               sx={{
-                whiteSpace: 'nowrap',
                 overflow: 'hidden',
+                whiteSpace: 'nowrap',
                 textOverflow: 'ellipsis',
               }}
             >
@@ -86,12 +111,15 @@ const ProductItem = ({ product }: Props) => {
           <Typography variant="h6">Available: {productAmount} items</Typography>
         </Stack>
         <Button
-          variant="contained"
-          disabled={productAmount === 0 || isLoading}
-          color="primary"
           fullWidth
+          color="primary"
+          variant="contained"
           startIcon={<BsCartPlus />}
-          onClick={handleAddToCart}
+          disabled={productAmount === 0 || isLoading}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleAddToCart();
+          }}
         >
           Add to cart
         </Button>

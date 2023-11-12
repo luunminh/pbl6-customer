@@ -1,10 +1,11 @@
 import React from 'react';
-import Breadcrumbs from 'src/components/Breadcrumbs';
-import Sidebar from './components/Sidebar';
+import { Breadcrumbs } from 'src/components';
+import { Sidebar, ProductGrid, ProductDetail } from './components';
 import { Container, Stack } from '@mui/material';
-import ProductGrid from './components/ProductGrid';
-
+import { useParams } from 'react-router-dom';
+import { isEmpty } from '@shared';
 const ProductsPage = () => {
+  const { id } = useParams();
   return (
     <>
       <Breadcrumbs />
@@ -16,8 +17,14 @@ const ProductsPage = () => {
           padding="24px"
           gap={3}
         >
-          <Sidebar />
-          <ProductGrid />
+          {isEmpty(id) ? (
+            <>
+              <Sidebar />
+              <ProductGrid />
+            </>
+          ) : (
+            <ProductDetail id={id} />
+          )}
         </Stack>
       </Container>
     </>

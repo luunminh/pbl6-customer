@@ -20,19 +20,23 @@ const SelectStoreModal = () => {
   };
 
   const handleShowWarningModal = useCallback(() => {
-    setDialogContent({
-      type: DialogType.YESNO_DIALOG,
-      title: '',
-      contentText: 'Change your Location',
-      subContentText:
-        'Some products may not be available in your new location, do you want to continue?',
-      showIcon: true,
-      isWarning: true,
-      okText: 'Continue',
-      maxWidth: 'sm',
-      onOk: handleSaveLocationStore,
-    });
-    return openModal();
+    if (!isEmpty(StoreService.getValue())) {
+      setDialogContent({
+        type: DialogType.YESNO_DIALOG,
+        title: '',
+        contentText: 'Change your Location',
+        subContentText:
+          'Some products may not be available in your new location, do you want to continue?',
+        showIcon: true,
+        isWarning: true,
+        okText: 'Continue',
+        maxWidth: 'sm',
+        onOk: handleSaveLocationStore,
+      });
+      return openModal();
+    }
+    return handleSaveLocationStore();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedStore]);
 
@@ -45,11 +49,11 @@ const SelectStoreModal = () => {
           sx={{
             px: 2,
             py: 4,
-            display: 'flex',
-            alignItems: 'center',
             gap: 1,
-            boxShadow: 'none',
+            display: 'flex',
             borderRadius: 2,
+            boxShadow: 'none',
+            alignItems: 'center',
             bgcolor: `${selectedStore === store.id ? COLOR_CODE.PRIMARY_200 : COLOR_CODE.WHITE}`,
           }}
         >

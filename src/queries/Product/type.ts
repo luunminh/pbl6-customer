@@ -31,3 +31,8 @@ export type ProductStore = {
   updatedAt: string;
   deletedAt: string;
 };
+
+export type ProductDetailParams = {
+  id: string;
+  storeId: string;
+};
