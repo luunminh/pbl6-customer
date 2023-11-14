@@ -8,11 +8,19 @@ function pathResolve(dir: string) {
 }
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+      },
+    },
+    outDir: 'dist',
+  },
   plugins: [
     react(),
     checker({
       typescript: true,
-      enableBuild: false,
+      enableBuild: true,
     }),
   ],
   resolve: {
