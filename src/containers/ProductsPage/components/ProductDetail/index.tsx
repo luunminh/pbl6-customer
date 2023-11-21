@@ -96,7 +96,7 @@ const ProductDetail = ({ id }: Props) => {
           'This product is already in your cart. You cannot add more because it exceeds the available stock.',
         showIcon: true,
         isWarning: true,
-        okText: 'OK',
+        okText: 'Got it',
         onOk: () => {
           closeModal();
         },
@@ -150,20 +150,28 @@ const ProductDetail = ({ id }: Props) => {
               <Tooltip title={'Decrease'} arrow>
                 <IconButton
                   disabled={quantity === 1}
-                  style={{ backgroundColor: COLOR_CODE.GREY_100 }}
+                  style={{
+                    backgroundColor: quantity === 1 ? COLOR_CODE.GREY_200 : COLOR_CODE.GREY_100,
+                  }}
                   onClick={() => setQuantity((prev) => prev - 1)}
                 >
                   <IoRemoveOutline size={28} color={COLOR_CODE.GREY_400} />
                 </IconButton>
               </Tooltip>
               <Typography variant="h2">{quantity}</Typography>
-              <Tooltip title={'Increase'} arrow>
-                <IconButton
-                  style={{ backgroundColor: COLOR_CODE.PRIMARY }}
-                  onClick={() => setQuantity((prev) => prev + 1)}
-                >
-                  <AiOutlinePlus size={28} color={COLOR_CODE.WHITE} />
-                </IconButton>
+              <Tooltip title={quantity === amount ? 'Maximum product quantity' : 'Increase'} arrow>
+                <span>
+                  <IconButton
+                    disabled={quantity === amount}
+                    style={{
+                      backgroundColor:
+                        quantity !== amount ? COLOR_CODE.PRIMARY : COLOR_CODE.GREY_200,
+                    }}
+                    onClick={() => setQuantity((prev) => prev + 1)}
+                  >
+                    <AiOutlinePlus size={28} color={COLOR_CODE.WHITE} />
+                  </IconButton>
+                </span>
               </Tooltip>
             </Stack>
             <Button

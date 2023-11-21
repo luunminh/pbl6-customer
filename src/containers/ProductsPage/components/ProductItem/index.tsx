@@ -68,7 +68,7 @@ const ProductItem = ({ product }: Props) => {
           'This product is already in your cart. You cannot add more because it exceeds the available stock.',
         showIcon: true,
         isWarning: true,
-        okText: 'OK',
+        okText: 'Got it',
         onOk: () => {
           closeModal();
         },

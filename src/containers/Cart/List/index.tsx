@@ -119,7 +119,16 @@ const CartList = () => {
   }, []);
 
   const renderTableRow = useCallback((item: Cart) => {
-    const { id, product, productId, quantity, price: totalPrice, inOfStock, image } = item || {};
+    const {
+      id,
+      product,
+      productId,
+      quantity,
+      price: totalPrice,
+      inOfStock,
+      image,
+      productStore,
+    } = item || {};
 
     return inOfStock ? (
       <TableRow key={id}>
@@ -150,18 +159,25 @@ const CartList = () => {
             <Typography>{quantity || 0}</Typography>
             <Tooltip
               title={`${
-                quantity === product.amount ? 'Maximum available product quantity' : 'Increase'
+                quantity === productStore.amount ? 'Maximum available product quantity' : 'Increase'
               }`}
               arrow
             >
               <span>
                 <IconButton
-                  disabled={quantity === product.amount}
+                  disabled={quantity === productStore.amount}
                   onClick={() =>
                     handleChangeProductQuantity(item.productId, '1', QuantityOptions.INCREASE)
                   }
                 >
-                  <IoAddCircle size={25} color={COLOR_CODE.PRIMARY_500} />
+                  <IoAddCircle
+                    size={25}
+                    color={
+                      quantity === productStore.amount
+                        ? COLOR_CODE.GREY_200
+                        : COLOR_CODE.PRIMARY_500
+                    }
+                  />
                 </IconButton>
               </span>
             </Tooltip>
