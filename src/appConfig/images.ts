@@ -6,6 +6,8 @@ import uamBG from 'src/assets/images/uam-bg.jpg';
 import noImage from 'src/assets/images/no-image.png';
 import noResultsFound from 'src/assets/images/no-results-found.png';
 import storeImage from 'src/assets/images/store-image.jpg';
+import banner from 'src/assets/images/banner.png';
+import thankFulIcon from 'src/assets/images/thankful_icon.png';
 
 export const IMAGES = {
   logo,
@@ -16,4 +18,6 @@ export const IMAGES = {
   noImage,
   noResultsFound,
   storeImage,
+  banner,
+  thankFulIcon,
 };

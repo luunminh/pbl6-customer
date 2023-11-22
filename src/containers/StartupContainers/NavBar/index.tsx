@@ -82,7 +82,7 @@ const Navbar: React.FC<Props> = ({ isAuthenticated }) => {
               flexDirection="row"
               justifyContent="space-between"
               alignItems="center"
-              gap={8}
+              gap={5}
             >
               <Stack direction="row" justifyItems="center" alignItems="center" gap={1}>
                 <Link to={PATHS.root} className="is-flex">
@@ -102,7 +102,6 @@ const Navbar: React.FC<Props> = ({ isAuthenticated }) => {
                   <Button
                     onClick={handleSelectStore}
                     sx={{
-                      pr: 7,
                       fontSize: 14,
                       borderRadius: 2,
                       textTransform: 'initial',

@@ -47,9 +47,9 @@ const Sidebar = () => {
         ) : (
           <>
             {categoryPages
-              .flatMap((page) => page.data)
+              ?.flatMap((page) => page.data)
               .map((category) => {
-                const isActive = search.includes(category.id);
+                const isActive = query?.get(ProductGridQueryParams.CATEGORIES) === category.id;
                 return (
                   <Typography
                     key={category.id}

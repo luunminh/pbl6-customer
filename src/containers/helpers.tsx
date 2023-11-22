@@ -11,6 +11,7 @@ const CreateAccount = React.lazy(() => import('@components/UAMContainer/Customer
 const ForgotPassword = React.lazy(() => import('@components/UAMContainer/ForgotPassword/'));
 const ResetPassword = React.lazy(() => import('@components/UAMContainer/ResetPassword/'));
 
+const Homepage = React.lazy(() => import('./Homepage'));
 const ProductsPage = React.lazy(() => import('./ProductsPage'));
 const StoresPage = React.lazy(() => import('./StoresPage'));
 const CartPage = React.lazy(() => import('./Cart'));
@@ -38,7 +39,7 @@ export const CustomRoute: React.FC<PropsWithChildren<RouteWrapperProps>> = ({
 };
 
 export const routerGroup = [
-  { path: PATHS.root, element: <OnDevelop />, isRequireAuth: false },
+  { path: PATHS.root, element: <Homepage />, isRequireAuth: false },
   { path: PATHS.signIn, element: <SignIn />, isRequireAuth: false },
   { path: PATHS.createAccount, element: <CreateAccount />, isRequireAuth: false },
   { path: PATHS.forgotPassword, element: <ForgotPassword />, isRequireAuth: false },

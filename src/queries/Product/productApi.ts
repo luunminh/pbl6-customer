@@ -1,9 +1,9 @@
-import axios from 'axios';
-import apisauce from 'apisauce';
-import appConfig from 'src/appConfig';
-import { ProductDetailParams, ProductListParams } from './type';
-import { AuthService, stringify } from '@shared';
 import { ApiKey } from '@queries/keys';
+import { AuthService, stringify } from '@shared';
+import apisauce from 'apisauce';
+import axios from 'axios';
+import appConfig from 'src/appConfig';
+import { ProductListParams } from './type';
 
 axios.defaults.withCredentials = true;
 const create = (baseURL = `${appConfig.API_URL}`) => {

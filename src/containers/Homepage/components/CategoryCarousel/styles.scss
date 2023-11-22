@@ -1,0 +1,17 @@
+@use 'src/modules/components/scss/vars' as *;
+@use 'src/modules/components/scss/mixin' as *;
+
+.alice-carousel {
+  width: 95%;
+  &__dots-item {
+    &:not(.__custom) {
+      background-color: $color-primary-300;
+      &:hover {
+        background-color: $color-primary-400;
+      }
+      &.__active {
+        background-color: $color-primary-500;
+      }
+    }
+  }
+}

@@ -2,7 +2,7 @@
 @use 'src/modules/components/scss/mixin' as *;
 @import 'src/modules/components/scss/styles';
 @import './assets/fonts/styles.css';
-
+@import "../node_modules/react-alice-carousel/lib/scss/alice-carousel.scss";
 
 // tailwind
 @tailwind base;

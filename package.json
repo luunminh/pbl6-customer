@@ -34,6 +34,7 @@
     "qs": "^6.11.2",
     "react": "^18.2.0",
     "react-accessible-dropdown-menu-hook": "^4.0.0",
+    "react-alice-carousel": "^2.8.0",
     "react-datepicker": "^4.16.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
