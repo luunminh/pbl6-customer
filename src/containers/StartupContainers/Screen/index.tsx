@@ -6,6 +6,7 @@ import { NAVBAR_HEIGHT } from '@appConfig/constants';
 import { useLocation } from 'react-router-dom';
 import { PATHS } from '@appConfig/paths';
 const Navbar = React.lazy(() => import('../NavBar'));
+const Footer = React.lazy(() => import('../Footer'));
 
 const Screen: React.FC<Props> = ({ isAuthenticated, children }) => {
   const { pathname } = useLocation();
@@ -20,11 +21,11 @@ const Screen: React.FC<Props> = ({ isAuthenticated, children }) => {
     <Stack
       justifyContent="space-between"
       alignItems="center"
-      gap={3}
       sx={isInHome ? { paddingTop: `${NAVBAR_HEIGHT}px` } : {}}
     >
       {isInHome && <Navbar isAuthenticated={isAuthenticated} />}
-      <Stack width="100%">{children}</Stack>
+      {children}
+      {isInHome && <Footer />}
     </Stack>
   );
 };

@@ -4364,6 +4364,13 @@ react-accessible-dropdown-menu-hook@^4.0.0:
   resolved "https://registry.yarnpkg.com/react-accessible-dropdown-menu-hook/-/react-accessible-dropdown-menu-hook-4.0.0.tgz#a07b719f75a7a3661f4800fec16852f2a6350ea6"
   integrity sha512-dquRX+26jBD2Pida0fmePfIYFPlHcAPh7uBSZ3TUJZcb3rRQ0yZXHEz2hFFX1/7vpofx8tIba85qc58tAuuOyg==
 
+react-alice-carousel@^2.8.0:
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/react-alice-carousel/-/react-alice-carousel-2.8.0.tgz#0ff91a2da9bfa5b47c3618764cb897beea31dc0f"
+  integrity sha512-c1l4+xxOVF0xClwQXMVzfC5KUfLpkf5zXpxMcX5qN8bvpE9q/Fj22PBuPOweivr4C33djXPh//NL75D9Jl4OLw==
+  dependencies:
+    vanilla-swipe "^2.4.1"
+
 react-datepicker@^4.16.0:
   version "4.16.0"
   resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-4.16.0.tgz#b9dd389bb5611a1acc514bba1dd944be21dd877f"
@@ -5282,6 +5289,11 @@ uuid@^9.0.1:
   version "9.0.1"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-9.0.1.tgz#e188d4c8853cc722220392c424cd637f32293f30"
   integrity sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==
+
+vanilla-swipe@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/vanilla-swipe/-/vanilla-swipe-2.4.1.tgz#697d58bde3729db3c80fd3de488a54a8eae05664"
+  integrity sha512-o6pfI0dipet88ZnPLV4Jx04Ia+U3xANh14vhROW2TOe/mrwk2JGG68+Z0BPoD1YUcQQEnK4SZBXkqFe+K1l7/w==
 
 vite-plugin-checker@^0.6.2:
   version "0.6.2"

@@ -28,15 +28,15 @@ const StoreItem = ({ store }: Props) => {
       <AccordionDetails sx={{ paddingX: 2 }}>
         <Stack justifyContent="center" gap={1}>
           <Stack direction="row" alignItems="center" gap={1}>
-            <IoLocationOutline size={16} color={COLOR_CODE.PRIMARY_600} />
+            <IoLocationOutline size={16} color={COLOR_CODE.PRIMARY_500} />
             <Typography variant="body2">{store.address}</Typography>
           </Stack>
           <Stack direction="row" alignItems="center" gap={1}>
-            <LiaPhoneSolid size={16} color={COLOR_CODE.PRIMARY_600} />
+            <LiaPhoneSolid size={16} color={COLOR_CODE.PRIMARY_500} />
             <Typography variant="body2">{store.hotline}</Typography>
           </Stack>
           <Stack direction="row" alignItems="center" gap={1}>
-            <AiOutlineClockCircle size={16} color={COLOR_CODE.PRIMARY_600} />
+            <AiOutlineClockCircle size={16} color={COLOR_CODE.PRIMARY_500} />
             <Typography variant="body2">7:00 - 23:00</Typography>
           </Stack>
         </Stack>

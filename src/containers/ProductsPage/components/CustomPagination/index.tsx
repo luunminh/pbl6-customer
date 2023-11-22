@@ -50,7 +50,6 @@ const CustomPagination: React.FC<Props> = ({ count, page, itemsPerPage, recordNa
       </Stack>
       <Stack
         {...(isTabletScreen && {
-          fullWidth: true,
           justify: 'center',
         })}
         direction="row"
