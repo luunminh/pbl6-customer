@@ -15,6 +15,7 @@ const Homepage = React.lazy(() => import('./Homepage'));
 const ProductsPage = React.lazy(() => import('./ProductsPage'));
 const StoresPage = React.lazy(() => import('./StoresPage'));
 const CartPage = React.lazy(() => import('./Cart'));
+const PaymentPage = React.lazy(() => import('./PaymentPage'));
 
 type RouteWrapperProps = {
   isAuthenticated: boolean;
@@ -51,4 +52,5 @@ export const routerGroup = [
   { path: PATHS.profile, element: <UserProfile />, isRequireAuth: true },
   { path: PATHS.dev, element: <Dev />, isRequireAuth: true },
   { path: PATHS.cart, element: <CartPage />, isRequireAuth: true },
+  { path: PATHS.payment, element: <PaymentPage />, isRequireAuth: true },
 ];

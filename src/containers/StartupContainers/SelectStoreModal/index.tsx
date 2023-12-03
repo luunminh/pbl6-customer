@@ -6,6 +6,7 @@ import { useGetAllStores } from '@queries';
 import { StoreService, isEmpty } from '@shared';
 import { useState, useContext, useCallback } from 'react';
 import { IoLocationOutline } from 'react-icons/io5';
+import { IoInformationCircle } from 'react-icons/io5';
 
 const SelectStoreModal = () => {
   const { openModal, closeModal, setDialogContent } = useContext(DialogContext);
@@ -26,9 +27,10 @@ const SelectStoreModal = () => {
         title: '',
         contentText: 'Change your Location',
         subContentText:
-          'Some products may not be available in your new location, do you want to continue?',
+          'Some products may not be available in your new location. Do you want to continue?',
         showIcon: true,
-        isWarning: true,
+        icon: <IoInformationCircle />,
+        isWarning: false,
         okText: 'Continue',
         maxWidth: 'sm',
         onOk: handleSaveLocationStore,

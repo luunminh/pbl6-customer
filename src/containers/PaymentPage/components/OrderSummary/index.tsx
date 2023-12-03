@@ -1,4 +1,4 @@
-import { PATHS } from '@appConfig/paths';
+import { SHIPPING_FEE } from '@appConfig/constants';
 import { COLOR_CODE, DialogContext, DialogType } from '@components';
 import { Button, Divider, IconButton, Stack, Typography } from '@mui/material';
 import { VoucherResponse, VoucherType, useGetCart } from '@queries';
@@ -6,13 +6,10 @@ import { StoreService, formatMoney, isEmpty } from '@shared';
 import { useCallback, useContext, useMemo } from 'react';
 import { BiSolidDiscount } from 'react-icons/bi';
 import { MdOutlineClear } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
 import { ChooseVoucherDialog } from 'src/components';
 import { VoucherContext } from 'src/context';
 
 const OrderSummary = () => {
-  const navigate = useNavigate();
-
   const { setDialogContent, openModal } = useContext(DialogContext);
 
   const { selectedVoucher, setSelectedVoucherId } = useContext(VoucherContext);
@@ -41,8 +38,11 @@ const OrderSummary = () => {
     }
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const total = useMemo(() => subTotal - getDiscount(selectedVoucher), [selectedVoucher, subTotal]);
+  const total = useMemo(
+    () => subTotal + SHIPPING_FEE - getDiscount(selectedVoucher),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [selectedVoucher, subTotal],
+  );
 
   const handleOpenVoucherDialog = useCallback((total) => {
     setDialogContent({
@@ -57,7 +57,7 @@ const OrderSummary = () => {
   }, []);
 
   return (
-    <>
+    <Stack width="30%">
       <Stack
         p={3}
         gap={3}
@@ -70,6 +70,11 @@ const OrderSummary = () => {
         <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
           <Typography>Subtotal</Typography>
           <Typography>{formatMoney(subTotal || 0)}</Typography>
+        </Stack>
+        <Divider />
+        <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
+          <Typography>Shipping fee</Typography>
+          <Typography>{formatMoney(SHIPPING_FEE)}</Typography>
         </Stack>
         <Divider />
         <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
@@ -105,7 +110,6 @@ const OrderSummary = () => {
             variant="outlined"
             color="primary"
             sx={{ textTransform: 'none', backgroundColor: COLOR_CODE.WHITE }}
-            disabled={isEmpty(cart)}
             onClick={() => handleOpenVoucherDialog(total)}
           >
             Choose a voucher
@@ -118,7 +122,7 @@ const OrderSummary = () => {
         bgcolor={COLOR_CODE.GREY_100}
         sx={{ borderBottomRightRadius: '6px', borderBottomLeftRadius: '6px' }}
       >
-        <Stack flexDirection="row" justifyContent="space-between">
+        <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
           <Typography fontSize={22} fontWeight={600}>
             Total
           </Typography>
@@ -126,17 +130,11 @@ const OrderSummary = () => {
             {formatMoney(total)}
           </Typography>
         </Stack>
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{ fontSize: 18 }}
-          disabled={isEmpty(cart)}
-          onClick={() => navigate(PATHS.payment)}
-        >
-          Check out
+        <Button variant="contained" color="primary" sx={{ fontSize: 18 }} type="submit">
+          Place order
         </Button>
       </Stack>
-    </>
+    </Stack>
   );
 };
 

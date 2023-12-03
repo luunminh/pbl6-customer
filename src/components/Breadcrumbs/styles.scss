@@ -7,7 +7,6 @@
     height: 40px;
     color: $color-grey-700;
     background-color: $color-primary-200;
-    padding: 8px 24px;
   }
   &__crumb:not(:last-child)::after {
     content: "/";
