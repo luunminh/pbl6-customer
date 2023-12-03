@@ -3,16 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { IoSearchOutline } from 'react-icons/io5';
 import { PATHS } from '@appConfig/paths';
 import { MuiTextField } from '@components';
-import { isEmpty } from '@shared';
+import { Callback, isEmpty } from '@shared';
 import { ProductGridQueryParams } from 'src/containers/ProductsPage/components/ProductGrid/type';
 
 type Props = {
   searchText?: string;
-  onSearch?: (_text: string) => void;
+  onSearch?: Callback;
   placeholder?: string;
 };
 
-const SearchBar: React.FC<Props> = ({ searchText, placeholder = 'Search' }) => {
+const SearchBar: React.FC<Props> = ({ searchText, onSearch, placeholder = 'Search' }) => {
   const navigate = useNavigate();
 
   const [searchValue, setSearchValue] = useState(searchText || '');
@@ -22,6 +22,7 @@ const SearchBar: React.FC<Props> = ({ searchText, placeholder = 'Search' }) => {
   };
 
   const handleSearch = () => {
+    if (onSearch) return onSearch(searchValue);
     if (!isEmpty(searchValue)) {
       navigate({
         pathname: PATHS.products,

@@ -18,4 +18,7 @@ export const PATHS = {
 
   // cart
   cart: '/cart',
+
+  // payment
+  payment: '/payment',
 };

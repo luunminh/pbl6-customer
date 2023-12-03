@@ -4,8 +4,10 @@ import { Sidebar, ProductGrid, ProductDetail } from './components';
 import { Container, Stack } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { isEmpty } from '@shared';
+
 const ProductsPage = () => {
   const { id } = useParams();
+
   return (
     <>
       <Breadcrumbs />

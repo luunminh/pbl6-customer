@@ -237,11 +237,13 @@ const CartList = () => {
       <TableContainer>
         <Table>
           <TableHead>
-            {cartTableHeadList.map((item) => (
-              <StyledTableCell sx={{ whiteSpace: 'nowrap' }} key={item.label} width={item.width}>
-                {item.label}
-              </StyledTableCell>
-            ))}
+            <TableRow>
+              {cartTableHeadList.map((item) => (
+                <StyledTableCell sx={{ whiteSpace: 'nowrap' }} key={item.label} width={item.width}>
+                  {item.label}
+                </StyledTableCell>
+              ))}
+            </TableRow>
           </TableHead>
           <TableBody>
             {isEmpty(cart) ? (
@@ -257,16 +259,21 @@ const CartList = () => {
         </Table>
       </TableContainer>
       <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'}>
-        <Typography color={COLOR_CODE.GREY_600}>{`Total: ${cartTotalItems} ${
-          cartTotalItems <= 1 ? 'item' : 'items'
+        <Typography color={COLOR_CODE.GREY_600}>{`Total: ${cartTotalItems || 0} ${
+          isEmpty(cartTotalItems) || cartTotalItems <= 1 ? 'item' : 'items'
         }`}</Typography>
         <Button
+          startIcon={<BiTrash size={18} />}
+          sx={{
+            textTransform: 'none',
+            color: COLOR_CODE.GREY_600,
+            fontWeight: 500,
+            fontSize: 16,
+            paddingX: 1,
+          }}
           onClick={handleDeleteCart}
-          startIcon={<BiTrash size={20} color={COLOR_CODE.GREY_600} />}
-          style={{ width: '210px', color: COLOR_CODE.GREY_600, fontWeight: 400, border: 'none' }}
-          variant="outlined"
         >
-          Remove All
+          Remove all
         </Button>
       </Stack>
     </Stack>

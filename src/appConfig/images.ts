@@ -8,6 +8,8 @@ import noResultsFound from 'src/assets/images/no-results-found.png';
 import storeImage from 'src/assets/images/store-image.jpg';
 import banner from 'src/assets/images/banner.png';
 import thankFulIcon from 'src/assets/images/thankful_icon.png';
+import momoIcon from 'src/assets/images/momo-icon.png';
+import notFound from 'src/assets/images/not-found.png';
 
 export const IMAGES = {
   logo,
@@ -20,4 +22,6 @@ export const IMAGES = {
   storeImage,
   banner,
   thankFulIcon,
+  momoIcon,
+  notFound,
 };

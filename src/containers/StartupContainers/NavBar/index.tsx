@@ -104,8 +104,8 @@ const Navbar: React.FC<Props> = ({ isAuthenticated }) => {
                     sx={{
                       fontSize: 14,
                       borderRadius: 2,
-                      textTransform: 'initial',
-                      border: `1px solid ${COLOR_CODE.GREY_300}`,
+                      textTransform: 'none',
+                      border: `1.5px solid ${COLOR_CODE.GREY_300}`,
                       fontWeight: 500,
                     }}
                     startIcon={<IoLocationOutline color={COLOR_CODE.PRIMARY_500} size={18} />}

@@ -13,6 +13,7 @@ import { DialogProvider } from '@components';
 import { Provider } from 'react-redux';
 import createStore from '@redux/store';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { VoucherContextProvider } from './context';
 
 const { store } = createStore();
 
@@ -56,7 +57,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             <ProSidebarProvider>
               <BrowserRouter>
                 <Suspense fallback={<LoadingContainer />}>
-                  <Container />
+                  <VoucherContextProvider>
+                    <Container />
+                  </VoucherContextProvider>
                 </Suspense>
               </BrowserRouter>
             </ProSidebarProvider>

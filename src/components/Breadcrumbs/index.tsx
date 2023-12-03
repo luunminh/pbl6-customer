@@ -30,8 +30,8 @@ const Breadcrumbs = () => {
 
   return (
     <Stack className="cmp-breadcrumbs-container">
-      <Container maxWidth="xl">
-        <Stack flexDirection="row" alignItems="center" gap="10px">
+      <Container maxWidth="xl" style={{ padding: 0 }}>
+        <Stack flexDirection="row" alignItems="center" paddingX={3} paddingY={1} gap="10px">
           <Link to={PATHS.root}>
             Home<span style={{ marginLeft: '10px' }}>/</span>
           </Link>

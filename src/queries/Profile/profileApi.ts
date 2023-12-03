@@ -25,8 +25,6 @@ const create = (baseURL = `${appConfig.API_URL}`) => {
     timeout: appConfig.CONNECTION_TIMEOUT,
   });
 
-  //TODO update jwt token
-
   const getProfile = () => {
     return api.get(`${ApiKey.USERS}/profile`, {});
   };

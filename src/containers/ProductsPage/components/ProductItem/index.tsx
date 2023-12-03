@@ -1,17 +1,16 @@
-import React, { useCallback, useContext } from 'react';
-import { Stack, Card, CardMedia, Typography, Button, Tooltip } from '@mui/material';
-import { COLOR_CODE, DialogType } from '@components';
-import { BsCartPlus } from 'react-icons/bs';
-import { ProductResponse } from '@queries/Product';
 import { IMAGES } from '@appConfig/images';
-import { StoreService, Toastify, formatMoney, isEmpty } from '@shared';
-import { useSelector } from 'react-redux';
-import { IRootState } from '@redux/store';
-import { DialogContext } from '@components';
-import { SelectStoreModal } from 'src/containers/StartupContainers';
-import { useAddProductToCart, useGetCart } from '@queries/Cart';
-import { useNavigate } from 'react-router-dom';
 import { PATHS } from '@appConfig/paths';
+import { COLOR_CODE, DialogContext, DialogType, Image } from '@components';
+import { Button, Card, Stack, Tooltip, Typography } from '@mui/material';
+import { useAddProductToCart, useGetCart } from '@queries/Cart';
+import { ProductResponse } from '@queries/Product';
+import { IRootState } from '@redux/store';
+import { StoreService, Toastify, formatMoney, isEmpty } from '@shared';
+import { useCallback, useContext } from 'react';
+import { BsCartPlus } from 'react-icons/bs';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { SelectStoreModal } from 'src/containers/StartupContainers';
 
 const ProductItem = ({ product }: Props) => {
   const isAuthenticated = useSelector((state: IRootState) => state.auth.isAuthenticated);
@@ -96,9 +95,9 @@ const ProductItem = ({ product }: Props) => {
       onClick={() => navigate(`${PATHS.products}/${product.id}`)}
     >
       <Stack justifyContent="space-between" alignItems="center" gap={4} flexShrink={1}>
-        <CardMedia
-          sx={{ height: '150px', width: '150px' }}
-          image={product.image || IMAGES.noImage}
+        <Image
+          sx={{ height: '150px', width: '150px', objectFit: 'contain' }}
+          src={product.image || IMAGES.noImage}
         />
         <Stack spacing={1} width={'100%'}>
           <Typography variant="h4" fontWeight={700} color={COLOR_CODE.PRIMARY_500}>

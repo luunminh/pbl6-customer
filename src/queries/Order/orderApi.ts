@@ -1,8 +1,8 @@
-import axios from 'axios';
+import { AuthService } from '@shared';
 import apisauce from 'apisauce';
+import axios from 'axios';
 import appConfig from 'src/appConfig';
-import { AddStaffPayload, StaffListParams } from './type';
-import { AuthService, stringify } from 'src/modules/shared';
+import { CreateOrderPayload } from './type';
 import { ApiKey } from '@queries/keys';
 
 axios.defaults.withCredentials = true;
@@ -23,20 +23,12 @@ const create = (baseURL = `${appConfig.API_URL}`) => {
     timeout: appConfig.CONNECTION_TIMEOUT,
   });
 
-  const getStaffList = (params: StaffListParams) => {
-    const { ...tableParams } = params;
-    const queryString = stringify(tableParams);
-    console.log('queryString', queryString);
-    return api.get(`/admin/users?${queryString}`, {});
-  };
-
-  const addStaff = (body: AddStaffPayload) => {
-    return api.post(`${ApiKey.ADD_STAFF}`, body, {});
+  const createOrder = (payload: CreateOrderPayload) => {
+    return api.post(`${ApiKey.ORDER}`, payload);
   };
 
   return {
-    getStaffList,
-    addStaff,
+    createOrder,
   };
 };
 
