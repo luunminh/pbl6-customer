@@ -7,6 +7,8 @@ import {
   IoStorefrontOutline,
   IoStorefront,
 } from 'react-icons/io5';
+import { CiCircleList } from 'react-icons/ci';
+import { FaListUl } from 'react-icons/fa';
 
 export const getShortName = ({ firstName = '', lastName = '' }) => {
   return `${firstName[0]}${lastName[0]}`;
@@ -59,6 +61,20 @@ export const navBarItems: NavBarItemType[] = [
     activeIcon: (
       <div className="title-icon" aria-details="Stores">
         <IoStorefront size={20} />
+      </div>
+    ),
+  },
+  {
+    label: 'Orders',
+    path: PATHS.order,
+    icon: (
+      <div className="title-icon" aria-details="Stores">
+        <CiCircleList size={20} />
+      </div>
+    ),
+    activeIcon: (
+      <div className="title-icon" aria-details="Stores">
+        <FaListUl size={20} />
       </div>
     ),
   },

@@ -15,6 +15,7 @@ export const PATHS = {
   products: '/products',
   productDetail: '/products/:id',
   order: '/order',
+  orderDetail: '/order/:id',
 
   // cart
   cart: '/cart',

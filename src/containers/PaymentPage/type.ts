@@ -1,8 +1,3 @@
-export enum PaymentMethod {
-  COD = 'COD',
-  MOMO = 'MOMO',
-}
-
 export enum OrderFormFields {
   FIRST_NAME = 'firstName',
   LAST_NAME = 'lastName',

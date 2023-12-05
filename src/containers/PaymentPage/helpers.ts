@@ -1,6 +1,7 @@
 import { ERROR_MESSAGES, phoneRegExp } from '@shared';
 import * as yup from 'yup';
-import { OrderFormFieldsType, PaymentMethod } from './type';
+import { OrderFormFieldsType } from './type';
+import { PaymentMethod } from '@queries';
 
 export const initialOrderFormValues: OrderFormFieldsType = {
   firstName: null,
