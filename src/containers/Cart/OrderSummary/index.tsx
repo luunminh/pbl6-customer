@@ -1,6 +1,6 @@
 import { PATHS } from '@appConfig/paths';
 import { COLOR_CODE, DialogContext, DialogType } from '@components';
-import { Button, Divider, IconButton, Stack, Typography } from '@mui/material';
+import { Button, Divider, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import { VoucherResponse, VoucherType, useGetCart } from '@queries';
 import { StoreService, formatMoney, isEmpty } from '@shared';
 import { useCallback, useContext, useMemo } from 'react';
@@ -55,6 +55,8 @@ const OrderSummary = () => {
     openModal();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const isCartContainOutOfStockProduct = cart.some((product) => !product.inOfStock);
 
   return (
     <>
@@ -126,15 +128,27 @@ const OrderSummary = () => {
             {formatMoney(total)}
           </Typography>
         </Stack>
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{ fontSize: 18 }}
-          disabled={isEmpty(cart)}
-          onClick={() => navigate(PATHS.payment)}
+        <Tooltip
+          title={
+            isEmpty(cart) || isCartContainOutOfStockProduct
+              ? 'Some products in your cart are out of stock or your cart is empty!'
+              : ''
+          }
+          arrow
         >
-          Check out
-        </Button>
+          <span style={{ width: '100%' }}>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ fontSize: 18 }}
+              disabled={isEmpty(cart) || isCartContainOutOfStockProduct}
+              onClick={() => navigate(PATHS.payment)}
+              fullWidth
+            >
+              Check out
+            </Button>
+          </span>
+        </Tooltip>
       </Stack>
     </>
   );

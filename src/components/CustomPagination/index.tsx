@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Pagination, Stack, Typography, useMediaQuery } from '@mui/material';
 import { COLOR_CODE } from '@components';
 import { isEmpty } from '@shared';
-import { ProductGridQueryParams } from '../ProductGrid/type';
+import { ProductGridQueryParams } from '../../containers/ProductsPage/components/ProductGrid/type';
 
 const clsPrefix = 'custom-pagination';
 const CustomPagination: React.FC<Props> = ({ count, page, itemsPerPage, recordName = 'items' }) => {

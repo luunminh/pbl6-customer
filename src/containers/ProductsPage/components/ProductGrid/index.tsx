@@ -6,7 +6,7 @@ import { COLOR_CODE, Image, Loading, Select } from '@components';
 import { ProductListParams, useGetAllProducts } from '@queries/Product';
 import { IMAGES } from '@appConfig/images';
 import { StoreService, isEmpty } from '@shared';
-import CustomPagination from '../CustomPagination';
+import { CustomPagination } from '..';
 import ProductItem from '../ProductItem';
 import { getInitialGridState, sortPriceOptions } from './helpers';
 import { ProductGridQueryParams, productGrid } from './type';
@@ -69,7 +69,11 @@ const ProductGrid = () => {
     handleGetProductList(params);
   };
 
-  const { products, totalRecords, setParams, isFetching } = useGetAllProducts();
+  const { products, totalRecords, setParams, isFetching } = useGetAllProducts({
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+  });
 
   const handleGetProductList = (params: ProductListParams) => {
     const storeId = StoreService.getValue();

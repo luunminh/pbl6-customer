@@ -1,6 +1,6 @@
 import { SHIPPING_FEE } from '@appConfig/constants';
 import { COLOR_CODE, DialogContext, DialogType } from '@components';
-import { Button, Divider, IconButton, Stack, Typography } from '@mui/material';
+import { Button, Divider, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import { VoucherResponse, VoucherType, useGetCart } from '@queries';
 import { StoreService, formatMoney, isEmpty } from '@shared';
 import { useCallback, useContext, useMemo } from 'react';
@@ -9,7 +9,10 @@ import { MdOutlineClear } from 'react-icons/md';
 import { ChooseVoucherDialog } from 'src/components';
 import { VoucherContext } from 'src/context';
 
-const OrderSummary = () => {
+type Props = {
+  isDisabled: boolean;
+};
+const OrderSummary = ({ isDisabled }: Props) => {
   const { setDialogContent, openModal } = useContext(DialogContext);
 
   const { selectedVoucher, setSelectedVoucherId } = useContext(VoucherContext);
@@ -130,9 +133,25 @@ const OrderSummary = () => {
             {formatMoney(total)}
           </Typography>
         </Stack>
-        <Button variant="contained" color="primary" sx={{ fontSize: 18 }} type="submit">
-          Place order
-        </Button>
+        <Tooltip
+          arrow
+          title={
+            isDisabled ? 'Some products in your cart are out of stock or your cart is empty!' : ''
+          }
+        >
+          <span style={{ width: '100%' }}>
+            <Button
+              variant="contained"
+              disabled={isDisabled}
+              color="primary"
+              sx={{ fontSize: 18 }}
+              type="submit"
+              fullWidth
+            >
+              Place order
+            </Button>
+          </span>
+        </Tooltip>
       </Stack>
     </Stack>
   );

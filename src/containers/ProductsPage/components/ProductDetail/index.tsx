@@ -59,6 +59,9 @@ const ProductDetail = ({ id }: Props) => {
   const { productDetail, isLoading: isFetchingProduct } = useGetProductDetail({
     id,
     storeId: StoreService.getValue(),
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
   });
 
   const { name, image, amount, description, price } = productDetail || {};

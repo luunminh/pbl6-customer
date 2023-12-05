@@ -1,23 +1,22 @@
-import { ApiResponseType, Callback, isEmpty, responseWrapper } from '@shared';
 import { QueryFunction, UseQueryOptions, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { ApiKey } from '../keys';
-import { ProductResponse } from './type';
-import { ProductApi } from '.';
+import { ApiResponseType, Callback, responseWrapper } from '@shared';
+import { GetOrderDetailResponse, OrderApi } from '.';
 
-export function useGetProductDetail(
-  options?: UseQueryOptions<ApiResponseType<ProductResponse>, Error, ProductResponse> & {
+export function useGetOrderDetail(
+  options?: UseQueryOptions<
+    ApiResponseType<GetOrderDetailResponse>,
+    Error,
+    GetOrderDetailResponse
+  > & {
     id: string;
-    storeId?: string;
     onSuccessCallback?: Callback;
     onErrorCallback?: Callback;
   },
 ) {
-  const handleGetProductDetail: QueryFunction<ApiResponseType<ProductResponse>> = () =>
-    responseWrapper<ApiResponseType<ProductResponse>>(ProductApi.getProductDetail, [
-      options.id,
-      options.storeId,
-    ]);
+  const handleGetOrderDetail: QueryFunction<ApiResponseType<GetOrderDetailResponse>> = () =>
+    responseWrapper<ApiResponseType<GetOrderDetailResponse>>(OrderApi.getOrderDetail, [options.id]);
 
   const {
     data,
@@ -25,12 +24,12 @@ export function useGetProductDetail(
     isError,
     isFetching: isLoading,
     isSuccess,
-  } = useQuery<ApiResponseType<ProductResponse>, Error, ProductResponse>(
-    [ApiKey.PRODUCT, options.id, options.storeId],
+  } = useQuery<ApiResponseType<GetOrderDetailResponse>, Error, GetOrderDetailResponse>(
+    [ApiKey.ORDER, options.id],
     {
-      queryFn: handleGetProductDetail,
+      queryFn: handleGetOrderDetail,
       notifyOnChangeProps: ['data', 'isFetching'],
-      enabled: !isEmpty(options.id),
+      enabled: !!options.id,
       ...options,
     },
   );
@@ -55,15 +54,15 @@ export function useGetProductDetail(
 
   const queryClient = useQueryClient();
 
-  const handleInvalidateProductDetail = () =>
-    queryClient.invalidateQueries([ApiKey.PRODUCT, options.id, options.storeId]);
+  const handleInvalidateOrderDetail = () =>
+    queryClient.invalidateQueries([ApiKey.ORDER, options.id]);
 
   return {
-    productDetail: data,
+    orderDetail: data,
     isError,
     error,
-    isLoading: isLoading,
+    isLoading,
     isSuccess,
-    handleInvalidateProductDetail,
+    handleInvalidateOrderDetail,
   };
 }

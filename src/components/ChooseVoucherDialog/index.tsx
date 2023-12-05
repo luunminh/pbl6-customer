@@ -20,6 +20,9 @@ const ChooseVoucherDialog = ({ total }: PropsType) => {
 
   const { vouchers, params, setParams } = useGetAllVouchers({
     onError: (error) => Toastify.error(error?.message),
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
   });
 
   const { profile } = useGetProfile({ onError: (error) => Toastify.error(error?.message) });

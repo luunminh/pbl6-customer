@@ -21,7 +21,9 @@ import {
   useGetCart,
   useGetProfile,
 } from '@queries';
-
+import { getDatabase, ref, set } from 'firebase/database';
+import { firebaseApp } from 'src/firebase';
+import { getRandomId } from '@shared';
 import { StoreService, Toastify, formatMoney, getErrorMessage, isEmpty } from '@shared';
 import { useFormik } from 'formik';
 import { useCallback, useContext, useMemo } from 'react';
@@ -33,7 +35,8 @@ import { Breadcrumbs } from 'src/components';
 import { VoucherContext } from 'src/context';
 import { OrderSummary } from './components';
 import { initialOrderFormValues, orderFormValidationSchema } from './helpers';
-import { OrderFormFields, OrderFormFieldsType, PaymentMethod } from './type';
+import { OrderFormFields, OrderFormFieldsType } from './type';
+import { PaymentMethod } from '@queries';
 
 const PaymentPage = () => {
   const navigate = useNavigate();
@@ -49,6 +52,8 @@ const PaymentPage = () => {
   const { cart, handleInvalidateCart } = useGetCart({
     storeId: StoreService.getValue(),
   });
+
+  const isCartContainOutOfStockProduct = cart.some((product) => !product.inOfStock);
 
   const { deleteCart } = useDeleteCart({
     onSuccess: () => {
@@ -84,9 +89,15 @@ const PaymentPage = () => {
       openSuccessDialog();
       deleteCart({});
       setSelectedVoucherId(null);
+      handleSendRequestMsg();
     },
     onError: (error) => Toastify.error(error?.message),
   });
+
+  const handleSendRequestMsg = () => {
+    const db = ref(getDatabase(firebaseApp), '/REQUEST_ORDER');
+    set(db, getRandomId()).then(() => console.log('REQUEST_ORDER'));
+  };
 
   const openSuccessDialog = useCallback(() => {
     setDialogContent({
@@ -101,7 +112,7 @@ const PaymentPage = () => {
       cancelText: 'Back to Home',
       onOk: () => {
         // change to path my orders later
-        navigate(PATHS.root);
+        navigate(PATHS.order);
         closeModal();
       },
       onCancel: () => {
@@ -114,19 +125,21 @@ const PaymentPage = () => {
   }, []);
 
   const handlePlaceOrder = (formValues: OrderFormFieldsType) => {
-    const { firstName, lastName, shippingAddress, phoneNumber, paymentMethod } = formValues;
-    createOrder({
-      contact: {
-        firstName: firstName,
-        lastName: lastName,
-        phoneNumber: phoneNumber,
-        address: shippingAddress,
-      },
-      productStores: cart?.flatMap((itemInCart) => getProductStore(itemInCart)),
-      voucherId: selectedVoucherId,
-      shippingFee: SHIPPING_FEE,
-      paymentMethod: paymentMethod,
-    });
+    if (!isCartContainOutOfStockProduct && !isEmpty(cart)) {
+      const { firstName, lastName, shippingAddress, phoneNumber, paymentMethod } = formValues;
+      createOrder({
+        contact: {
+          firstName: firstName,
+          lastName: lastName,
+          phoneNumber: phoneNumber,
+          address: shippingAddress,
+        },
+        productStores: cart?.flatMap((itemInCart) => getProductStore(itemInCart)),
+        voucherId: selectedVoucherId,
+        shippingFee: SHIPPING_FEE,
+        paymentMethod: paymentMethod,
+      });
+    }
   };
 
   const { values, errors, touched, getFieldProps, setFieldValue, handleSubmit } =
@@ -386,7 +399,7 @@ const PaymentPage = () => {
                 {renderShippingOption()}
                 {renderPaymentOption()}
               </Stack>
-              <OrderSummary />
+              <OrderSummary isDisabled={isEmpty(cart) || isCartContainOutOfStockProduct} />
             </Stack>
           </Stack>
         </form>
