@@ -1,18 +1,25 @@
+import {
+  CustomDropdown,
+  DialogContext,
+  DialogType,
+  DropdownItem,
+  RoleTitle,
+  UserProfileType,
+} from '@components';
+import { EmailVerify } from '@components/ChangePassword/EmailVerify';
 import { Avatar, Button, Stack, Typography } from '@mui/material';
-import * as React from 'react';
-import { TfiAngleDown } from 'react-icons/tfi';
-import { useNavigate } from 'react-router-dom';
-import { COLOR_CODE } from 'src/modules/components/configs/theme';
-import { PATHS } from 'src/appConfig/paths';
-import { CustomDropdown, DialogContext, DialogType, RoleTitle, UserProfileType } from '@components';
+import { setAuthenticated, setCurrentRole, setProfile } from '@redux/auth/authSlice';
 import { AuthService, getFullName } from '@shared';
-import { DropdownItem } from '@components';
+import * as React from 'react';
 import { AiOutlineLock, AiOutlineUser } from 'react-icons/ai';
 import { IoLogOutOutline } from 'react-icons/io5';
-import { getShortName } from './helpers';
-import { EmailVerify } from '@components/ChangePassword/EmailVerify';
+import { LuClipboardList } from 'react-icons/lu';
+import { TfiAngleDown } from 'react-icons/tfi';
 import { useDispatch } from 'react-redux';
-import { setAuthenticated, setCurrentRole, setProfile } from '@redux/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
+import { PATHS } from 'src/appConfig/paths';
+import { COLOR_CODE } from 'src/modules/components/configs/theme';
+import { getShortName } from './helpers';
 
 const UserMenu: React.FC<Props> = ({ profile }) => {
   const dispatch = useDispatch();
@@ -75,6 +82,13 @@ const UserMenu: React.FC<Props> = ({ profile }) => {
           navigate(PATHS.profile);
         },
         icon: <AiOutlineUser size={18} />,
+      },
+      {
+        label: 'My Orders',
+        onClick: () => {
+          navigate(PATHS.order);
+        },
+        icon: <LuClipboardList size={18} />,
       },
       {
         label: 'Change Password',

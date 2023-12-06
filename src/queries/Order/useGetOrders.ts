@@ -12,7 +12,7 @@ export function useGetOrders(
     onErrorCallback?: Callback;
   },
 ) {
-  const [params, setParams] = useState<TableParams>({ order: 'createdAt:asc' });
+  const [params, setParams] = useState<TableParams>({});
   const { data, error, isSuccess, isError, isFetching } = useQuery<
     PaginationResponseType<GetOrdersResponse>,
     Error

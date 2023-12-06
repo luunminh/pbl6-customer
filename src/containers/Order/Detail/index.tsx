@@ -1,52 +1,55 @@
+import { PATHS } from '@appConfig/paths';
 import { COLOR_CODE, DialogContext, DialogType, Image, Loading } from '@components';
+import { StyledTableCell } from '@customerShared';
 import {
+  Button,
+  Chip,
   Grid,
   Stack,
   Table,
-  TableHead,
-  Typography,
-  TableRow,
-  Chip,
   TableBody,
   TableCell,
-  Button,
+  TableHead,
+  TableRow,
+  Typography,
 } from '@mui/material';
 import {
   OrderStatus,
   PaymentMethodTitle,
-  VoucherResponse,
-  VoucherType,
   useCancelOrder,
   useGetOrderDetail,
   useGetOrders,
 } from '@queries';
-import {
-  Toastify,
-  formatDate,
-  formatMoney,
-  formatValueOrNull,
-  getFullName,
-  isEmpty,
-} from '@shared';
-import { renderOrderCardStatus } from '../List/OrderCard/helpers';
-import { MdOutlineDateRange, MdOutlineLocalShipping } from 'react-icons/md';
-import { FaRegClock } from 'react-icons/fa';
+import { Toastify, formatDate, formatMoney, formatValueOrNull, getFullName } from '@shared';
+import { useCallback, useContext, useMemo } from 'react';
 import { CiCreditCard1, CiUser } from 'react-icons/ci';
-import { orderTableHeadList } from './helper';
-import { StyledTableCell } from '@customerShared';
-import { useMemo, useCallback, useContext } from 'react';
+import { FaRegClock } from 'react-icons/fa';
+import { MdOutlineDateRange, MdOutlineLocalShipping } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
-import { PATHS } from '@appConfig/paths';
+import { renderOrderCardStatus } from '../List/OrderCard/helpers';
+import { orderTableHeadList } from './helper';
+
 const OrderDetail = ({ id }: Props) => {
   const navigate = useNavigate();
+
   const { openModal, closeModal, setDialogContent } = useContext(DialogContext);
 
   const { orderDetail, isLoading, handleInvalidateOrderDetail } = useGetOrderDetail({ id });
 
   const { handleInvalidateOrders } = useGetOrders({});
 
-  const { createdAt, orderStatusId, metadata, paymentMethod, orderDetails, shipping, voucher } =
-    orderDetail || {};
+  const {
+    createdAt,
+    orderStatusId,
+    metadata,
+    paymentMethod,
+    orderDetails,
+    subTotal,
+    shipping,
+    discountValue,
+    total,
+  } = orderDetail || {};
+
   const { Information } = metadata || {};
 
   const { cancelOrder, isLoading: isCancellingOrder } = useCancelOrder({
@@ -60,27 +63,9 @@ const OrderDetail = ({ id }: Props) => {
     },
   });
 
-  const subTotal = useMemo(
-    () => orderDetails?.reduce((total, curr) => total + Number(curr.orderPrice), 0),
+  const totalItems = useMemo(
+    () => orderDetails?.reduce((total, curProduct) => total + curProduct.quantity, 0),
     [orderDetails],
-  );
-
-  const getDiscount = (voucher: VoucherResponse): number => {
-    if (!isEmpty(voucher)) {
-      if (voucher.type === VoucherType.FIXED) {
-        return voucher.discountValue;
-      } else {
-        return (voucher.discountValue * subTotal) / 100;
-      }
-    } else {
-      return 0;
-    }
-  };
-
-  const total = useMemo(
-    () => subTotal - getDiscount(voucher as VoucherResponse),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [voucher, subTotal],
   );
 
   const handleCancelOrder = useCallback(() => {
@@ -113,7 +98,7 @@ const OrderDetail = ({ id }: Props) => {
       <Stack flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
         <Stack flexDirection={'row'} alignItems={'center'} gap={3}>
           <Typography variant="h2">
-            Order{' '}
+            Order &nbsp;
             <span style={{ color: COLOR_CODE.PRIMARY }}>{`#${formatDate(
               createdAt,
               'DDMMYYTHHmmss',
@@ -194,8 +179,8 @@ const OrderDetail = ({ id }: Props) => {
             Order List
           </Typography>
           <Chip
-            color="success"
-            label={`${orderDetails.length} ${orderDetails.length > 1 ? 'items' : 'item'}`}
+            label={totalItems >= 2 ? `${totalItems} items` : `${totalItems} item`}
+            color="info"
           />
         </Stack>
         <Table>
@@ -211,7 +196,7 @@ const OrderDetail = ({ id }: Props) => {
           <TableBody>
             {orderDetails.map(({ product, quantity }) => (
               <TableRow key={product.id}>
-                <TableCell>
+                <TableCell sx={{ color: COLOR_CODE.GREY_700 }}>
                   <Stack flexDirection={'row'} alignItems={'center'} gap={1}>
                     <Image
                       src={product.image}
@@ -220,51 +205,57 @@ const OrderDetail = ({ id }: Props) => {
                     <Typography>{product?.name}</Typography>
                   </Stack>
                 </TableCell>
-                <TableCell>{quantity}</TableCell>
-                <TableCell>{formatMoney(product.price)}</TableCell>
-                <TableCell>{formatMoney(product.price * quantity)}</TableCell>
+                <TableCell sx={{ color: COLOR_CODE.GREY_700, fontSize: 16 }}>{quantity}</TableCell>
+                <TableCell sx={{ color: COLOR_CODE.GREY_700, fontSize: 16 }}>
+                  {formatMoney(product.price)}
+                </TableCell>
+                <TableCell sx={{ color: COLOR_CODE.GREY_700, fontSize: 16 }}>
+                  {formatMoney(product.price * quantity)}
+                </TableCell>
               </TableRow>
             ))}
             <TableRow>
               <TableCell />
               <TableCell />
               <TableCell>
-                <Typography variant="body2">Sub Total:</Typography>
+                <Typography fontSize={15}>Sub Total</Typography>
               </TableCell>
               <TableCell>
-                <Typography variant="body2">{formatMoney(subTotal)}</Typography>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell />
-              <TableCell />
-              <TableCell>
-                <Typography variant="body2">Shipping Fee:</Typography>
-              </TableCell>
-              <TableCell>
-                <Typography variant="body2">{formatMoney(shipping)}</Typography>
+                <Typography fontSize={15}>{formatMoney(subTotal)}</Typography>
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell />
               <TableCell />
               <TableCell>
-                <Typography variant="body2">Discount Value:</Typography>
+                <Typography fontSize={15}>Shipping Fee</Typography>
               </TableCell>
               <TableCell>
-                <Typography variant="body2">
-                  {formatMoney(getDiscount(voucher as VoucherResponse))}
+                <Typography fontSize={15}>{formatMoney(shipping)}</Typography>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell />
+              <TableCell />
+              <TableCell>
+                <Typography fontSize={15}>Discount Value</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography fontSize={15}>{formatMoney(discountValue)}</Typography>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={{ borderBottom: 'none' }} />
+              <TableCell style={{ borderBottom: 'none' }} />
+              <TableCell style={{ borderBottom: 'none' }}>
+                <Typography fontSize={17} fontWeight={700}>
+                  Grand Total
                 </Typography>
               </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={{ borderBottom: 'none' }} />
-              <TableCell style={{ borderBottom: 'none' }} />
               <TableCell style={{ borderBottom: 'none' }}>
-                <Typography fontWeight={700}>Grand Total</Typography>
-              </TableCell>
-              <TableCell style={{ borderBottom: 'none' }}>
-                <Typography fontWeight={700}>{formatMoney(total)}</Typography>
+                <Typography fontSize={17} fontWeight={700}>
+                  {formatMoney(total)}
+                </Typography>
               </TableCell>
             </TableRow>
           </TableBody>

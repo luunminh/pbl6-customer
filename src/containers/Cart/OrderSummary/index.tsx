@@ -44,11 +44,11 @@ const OrderSummary = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const total = useMemo(() => subTotal - getDiscount(selectedVoucher), [selectedVoucher, subTotal]);
 
-  const handleOpenVoucherDialog = useCallback((total) => {
+  const handleOpenVoucherDialog = useCallback((subTotal) => {
     setDialogContent({
       type: DialogType.CONTENT_DIALOG,
       title: 'Choose a voucher',
-      data: <ChooseVoucherDialog total={total} />,
+      data: <ChooseVoucherDialog subTotal={subTotal} />,
       maxWidth: 'md',
     });
 
@@ -56,7 +56,7 @@ const OrderSummary = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const isCartContainOutOfStockProduct = cart.some((product) => !product.inOfStock);
+  const isCartContainOutOfStockProduct = cart?.some((product) => !product.inOfStock);
 
   return (
     <>
@@ -108,7 +108,7 @@ const OrderSummary = () => {
             color="primary"
             sx={{ textTransform: 'none', backgroundColor: COLOR_CODE.WHITE }}
             disabled={isEmpty(cart)}
-            onClick={() => handleOpenVoucherDialog(total)}
+            onClick={() => handleOpenVoucherDialog(subTotal)}
           >
             Choose a voucher
           </Button>

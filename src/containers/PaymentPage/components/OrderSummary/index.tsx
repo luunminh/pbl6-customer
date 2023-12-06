@@ -12,6 +12,7 @@ import { VoucherContext } from 'src/context';
 type Props = {
   isDisabled: boolean;
 };
+
 const OrderSummary = ({ isDisabled }: Props) => {
   const { setDialogContent, openModal } = useContext(DialogContext);
 
@@ -47,11 +48,11 @@ const OrderSummary = ({ isDisabled }: Props) => {
     [selectedVoucher, subTotal],
   );
 
-  const handleOpenVoucherDialog = useCallback((total) => {
+  const handleOpenVoucherDialog = useCallback((subTotal) => {
     setDialogContent({
       type: DialogType.CONTENT_DIALOG,
       title: 'Choose a voucher',
-      data: <ChooseVoucherDialog total={total} />,
+      data: <ChooseVoucherDialog subTotal={subTotal} />,
       maxWidth: 'md',
     });
 
@@ -60,7 +61,7 @@ const OrderSummary = ({ isDisabled }: Props) => {
   }, []);
 
   return (
-    <Stack width="30%">
+    <Stack width="35%">
       <Stack
         p={3}
         gap={3}
@@ -88,7 +89,6 @@ const OrderSummary = ({ isDisabled }: Props) => {
           <Stack flexGrow={1} flexDirection="row" gap={1} alignItems="center">
             <BiSolidDiscount color={COLOR_CODE.PRIMARY} size={24} />
             <Typography
-              flexGrow={1}
               sx={{
                 color: !isEmpty(selectedVoucher) ? COLOR_CODE.PRIMARY_500 : COLOR_CODE.GREY_500,
               }}
@@ -113,7 +113,7 @@ const OrderSummary = ({ isDisabled }: Props) => {
             variant="outlined"
             color="primary"
             sx={{ textTransform: 'none', backgroundColor: COLOR_CODE.WHITE }}
-            onClick={() => handleOpenVoucherDialog(total)}
+            onClick={() => handleOpenVoucherDialog(subTotal)}
           >
             Choose a voucher
           </Button>

@@ -57,11 +57,16 @@ const OrderList = () => {
 
   const handleTriggerAction = () => {
     const params = getActionParams(currentState, query);
-    setParams(params);
+    if (isEmpty(params?.order)) {
+      setParams({ ...params, order: 'createdAt:desc' });
+    } else {
+      setParams({ ...params });
+    }
   };
 
   const setStatusParams = useCallback(
     (value) => {
+      query.delete('page');
       setActiveStatus(value);
       if (isEmpty(value) || value === 'all') {
         query.delete('orderStatusId');

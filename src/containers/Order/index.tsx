@@ -1,17 +1,15 @@
-import { Breadcrumbs } from 'src/components';
-import OrderList from './List';
-import { Box, Container, Stack } from '@mui/material';
 import { COLOR_CODE } from '@components';
-import { useParams } from 'react-router-dom';
+import { Box, Container, Stack } from '@mui/material';
 import { isEmpty } from '@shared';
+import { useParams } from 'react-router-dom';
 import OrderDetail from './Detail';
+import OrderList from './List';
 
 const OrderPage = () => {
   const { id } = useParams();
 
   return (
     <Box bgcolor={isEmpty(id) ? COLOR_CODE.GREY_50 : COLOR_CODE.WHITE} width={'100vw'}>
-      {isEmpty(id) && <Breadcrumbs />}
       <Container maxWidth="xl" style={{ padding: 0 }}>
         <Stack
           width="100%"

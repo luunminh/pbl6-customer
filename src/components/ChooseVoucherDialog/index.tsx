@@ -9,7 +9,7 @@ import { TbDiscount2 } from 'react-icons/tb';
 import { SearchBar } from 'src/components';
 import { VoucherContext } from 'src/context';
 
-const ChooseVoucherDialog = ({ total }: PropsType) => {
+const ChooseVoucherDialog = ({ subTotal }: PropsType) => {
   const { closeModal } = useContext(DialogContext);
 
   const { selectedVoucherId, setSelectedVoucherId } = useContext(VoucherContext);
@@ -81,7 +81,7 @@ const ChooseVoucherDialog = ({ total }: PropsType) => {
                       ':hover': {
                         boxShadow: '2px 3px 6px 0px rgba(207, 212, 217, 0.5)',
                       },
-                      opacity: total < voucher.minValueOrder ? 0.6 : 1,
+                      opacity: subTotal < voucher.minValueOrder ? 0.6 : 1,
                     }}
                   >
                     <Stack direction="row" justifyContent="center" alignItems="center" gap={2}>
@@ -118,7 +118,7 @@ const ChooseVoucherDialog = ({ total }: PropsType) => {
                         size="small"
                         disableRipple
                         sx={{ padding: 5 }}
-                        disabled={total < voucher.minValueOrder}
+                        disabled={subTotal < voucher.minValueOrder}
                       />
                     </Stack>
                   </Card>
@@ -163,7 +163,7 @@ const ChooseVoucherDialog = ({ total }: PropsType) => {
 };
 
 type PropsType = {
-  total: number;
+  subTotal: number;
 };
 
 export default ChooseVoucherDialog;

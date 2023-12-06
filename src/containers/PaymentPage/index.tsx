@@ -53,7 +53,7 @@ const PaymentPage = () => {
     storeId: StoreService.getValue(),
   });
 
-  const isCartContainOutOfStockProduct = cart.some((product) => !product.inOfStock);
+  const isCartContainOutOfStockProduct = cart?.some((product) => !product.inOfStock);
 
   const { deleteCart } = useDeleteCart({
     onSuccess: () => {
@@ -111,7 +111,6 @@ const PaymentPage = () => {
       okText: 'Go to My Orders',
       cancelText: 'Back to Home',
       onOk: () => {
-        // change to path my orders later
         navigate(PATHS.order);
         closeModal();
       },
@@ -394,7 +393,7 @@ const PaymentPage = () => {
               Back to Cart
             </Button>
             <Stack width="100%" direction="row" gap={3}>
-              <Stack width="70%" alignItems="flex-start" gap={2}>
+              <Stack width="65%" alignItems="flex-start" gap={2}>
                 {renderCustomerInfo()}
                 {renderShippingOption()}
                 {renderPaymentOption()}

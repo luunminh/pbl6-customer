@@ -10,6 +10,7 @@ const OrderCard = ({ record }: Props) => {
   const navigate = useNavigate();
 
   const { createdAt, orderDetails, orderStatusId } = record || {};
+
   return (
     <Card sx={{ height: '480px', padding: '24px', borderRadius: '12px' }}>
       <Stack gap={3}>
@@ -21,8 +22,8 @@ const OrderCard = ({ record }: Props) => {
             px={2}
             py={1}
           >
-            Order ID:{' '}
-            <span style={{ color: COLOR_CODE.PRIMARY, fontWeight: 400 }}>{`#${formatDate(
+            Order &nbsp;
+            <span style={{ color: COLOR_CODE.PRIMARY, fontWeight: 600 }}>{`#${formatDate(
               createdAt,
               'DDMMYYTHHmmss',
             )}`}</span>
@@ -30,7 +31,7 @@ const OrderCard = ({ record }: Props) => {
           {renderOrderCardStatus(orderStatusId)}
         </Stack>
         <Stack height={'300px'}>
-          {orderDetails.slice(0, 2).map(({ id, product, quantity, orderPrice }, idx) => (
+          {orderDetails.slice(0, 2).map(({ id, product, quantity }, idx) => (
             <Stack
               key={id}
               flexDirection={'row'}
@@ -55,7 +56,7 @@ const OrderCard = ({ record }: Props) => {
                   </Typography>
                   <Typography variant="body2">Quantity: {quantity}</Typography>
                 </Stack>
-                <Typography color={COLOR_CODE.PRIMARY}>{formatMoney(+orderPrice)}</Typography>
+                <Typography color={COLOR_CODE.PRIMARY}>{formatMoney(product.price)}</Typography>
               </Stack>
             </Stack>
           ))}
@@ -63,6 +64,7 @@ const OrderCard = ({ record }: Props) => {
         <Stack alignItems={'end'}>
           <Button
             variant="outlined"
+            color="primary"
             style={{ borderRadius: '20px' }}
             onClick={() => navigate(`${PATHS.order}/${record.id}`)}
           >
