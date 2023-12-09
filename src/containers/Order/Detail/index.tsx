@@ -54,7 +54,7 @@ const OrderDetail = ({ id }: Props) => {
 
   const { cancelOrder, isLoading: isCancellingOrder } = useCancelOrder({
     onSuccess() {
-      Toastify.success('Your request to cancel this order has been sent!');
+      Toastify.success('Your order has been cancelled!');
       handleInvalidateOrders();
       handleInvalidateOrderDetail();
     },
