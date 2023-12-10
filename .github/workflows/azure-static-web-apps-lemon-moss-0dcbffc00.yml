@@ -19,6 +19,15 @@ jobs:
         with:
           submodules: true
           lfs: false
+
+      - name: Install
+        run: yarn install
+
+      - name: Init Modules
+        run: yarn init:modules
+
+      - name: Build
+        run: yarn build
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
