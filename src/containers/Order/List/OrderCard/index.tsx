@@ -31,7 +31,7 @@ const OrderCard = ({ record }: Props) => {
           {renderOrderCardStatus(orderStatusId)}
         </Stack>
         <Stack height={'300px'}>
-          {orderDetails.slice(0, 2).map(({ id, product, quantity }, idx) => (
+          {orderDetails.slice(0, 2).map(({ id, quantity, orderPrice, product }, idx) => (
             <Stack
               key={id}
               flexDirection={'row'}
@@ -56,7 +56,9 @@ const OrderCard = ({ record }: Props) => {
                   </Typography>
                   <Typography variant="body2">Quantity: {quantity}</Typography>
                 </Stack>
-                <Typography color={COLOR_CODE.PRIMARY}>{formatMoney(product.price)}</Typography>
+                <Typography color={COLOR_CODE.PRIMARY}>
+                  {formatMoney(+orderPrice / quantity)}
+                </Typography>
               </Stack>
             </Stack>
           ))}

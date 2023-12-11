@@ -4,4 +4,5 @@ export const ProductApi = productApi.create();
 
 export * from './useGetAllProducts';
 export * from './useGetProductDetail';
+export * from './useGetTopSells';
 export * from './type';

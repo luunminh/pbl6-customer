@@ -3,7 +3,7 @@ import { AuthService, stringify } from '@shared';
 import apisauce from 'apisauce';
 import axios from 'axios';
 import appConfig from 'src/appConfig';
-import { ProductListParams } from './type';
+import { ProductListParams, TopSellsParams } from './type';
 
 axios.defaults.withCredentials = true;
 const create = (baseURL = `${appConfig.API_URL}`) => {
@@ -34,9 +34,16 @@ const create = (baseURL = `${appConfig.API_URL}`) => {
     return api.get(`${ApiKey.PRODUCT}/${id}?${queryString}`);
   };
 
+  const getTopSells = (params: TopSellsParams) => {
+    const queryString = stringify(params);
+    console.log('queryString', queryString);
+    return api.get(`${ApiKey.TOP_SELLS}?${queryString}`);
+  };
+
   return {
     getProductList,
     getProductDetail,
+    getTopSells,
   };
 };
 

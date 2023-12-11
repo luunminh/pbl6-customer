@@ -194,7 +194,7 @@ const OrderDetail = ({ id }: Props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {orderDetails.map(({ product, quantity }) => (
+            {orderDetails.map(({ product, quantity, orderPrice }) => (
               <TableRow key={product.id}>
                 <TableCell sx={{ color: COLOR_CODE.GREY_700 }}>
                   <Stack flexDirection={'row'} alignItems={'center'} gap={1}>
@@ -207,10 +207,10 @@ const OrderDetail = ({ id }: Props) => {
                 </TableCell>
                 <TableCell sx={{ color: COLOR_CODE.GREY_700, fontSize: 16 }}>{quantity}</TableCell>
                 <TableCell sx={{ color: COLOR_CODE.GREY_700, fontSize: 16 }}>
-                  {formatMoney(product.price)}
+                  {formatMoney(+orderPrice / quantity)}
                 </TableCell>
                 <TableCell sx={{ color: COLOR_CODE.GREY_700, fontSize: 16 }}>
-                  {formatMoney(product.price * quantity)}
+                  {formatMoney(+orderPrice)}
                 </TableCell>
               </TableRow>
             ))}
