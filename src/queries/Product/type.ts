@@ -36,3 +36,29 @@ export type ProductDetailParams = {
   id: string;
   storeId: string;
 };
+
+// GET TOP SELLS
+export type TopSellsParams = {
+  storeId?: string;
+};
+
+export type TopSellProductType = {
+  id: string;
+  name: string;
+  image: string;
+  description: string;
+  amount: number;
+  price: number;
+  categoryId: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+  amountOfProductStore?: number;
+};
+
+export type TopSellsResponse = [
+  {
+    totalQuantitySold: number;
+    product: TopSellProductType;
+  },
+];

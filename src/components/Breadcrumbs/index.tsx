@@ -7,6 +7,7 @@ import './styles.scss';
 
 const Breadcrumbs = () => {
   const { id } = useParams();
+
   const { pathname } = useLocation();
 
   const { productDetail } = useGetProductDetail({ id });

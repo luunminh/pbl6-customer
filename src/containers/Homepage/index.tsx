@@ -2,6 +2,7 @@ import { IMAGES } from '@appConfig/images';
 import { COLOR_CODE, Image } from '@components';
 import { Container, Stack, Typography } from '@mui/material';
 import CategoryCarousel from './components/CategoryCarousel';
+import TopSellsList from './components/TopSellsList';
 
 const Homepage = () => {
   return (
@@ -12,6 +13,10 @@ const Homepage = () => {
           Explore Categories
         </Typography>
         <CategoryCarousel />
+        <Typography variant="h3" fontWeight={600} color={COLOR_CODE.GREY_800}>
+          Top Sells
+        </Typography>
+        <TopSellsList />
       </Stack>
     </Container>
   );

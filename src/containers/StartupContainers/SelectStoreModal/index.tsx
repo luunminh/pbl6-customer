@@ -25,9 +25,9 @@ const SelectStoreModal = () => {
       setDialogContent({
         type: DialogType.YESNO_DIALOG,
         title: '',
-        contentText: 'Change your Location',
+        contentText: 'Change Store Location',
         subContentText:
-          'Some products may not be available in your new location. Do you want to continue?',
+          'Some products may not be available in the new store location. Do you want to continue?',
         showIcon: true,
         icon: <IoInformationCircle />,
         isWarning: false,
