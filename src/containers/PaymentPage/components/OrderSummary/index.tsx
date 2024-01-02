@@ -1,6 +1,14 @@
 import { SHIPPING_FEE } from '@appConfig/constants';
 import { COLOR_CODE, DialogContext, DialogType } from '@components';
-import { Button, Divider, IconButton, Stack, Tooltip, Typography } from '@mui/material';
+import {
+  Button,
+  Divider,
+  IconButton,
+  Stack,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import { VoucherResponse, VoucherType, useGetCart } from '@queries';
 import { StoreService, formatMoney, isEmpty } from '@shared';
 import { useCallback, useContext, useMemo } from 'react';
@@ -14,6 +22,8 @@ type Props = {
 };
 
 const OrderSummary = ({ isDisabled }: Props) => {
+  const isMobileScreen = useMediaQuery('(max-width: 767px)');
+
   const { setDialogContent, openModal } = useContext(DialogContext);
 
   const { selectedVoucher, setSelectedVoucherId } = useContext(VoucherContext);
@@ -61,7 +71,7 @@ const OrderSummary = ({ isDisabled }: Props) => {
   }, []);
 
   return (
-    <Stack width="35%">
+    <Stack width={isMobileScreen ? '100%' : '35%'}>
       <Stack
         p={3}
         gap={3}

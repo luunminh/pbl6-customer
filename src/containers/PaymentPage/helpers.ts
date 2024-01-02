@@ -1,14 +1,13 @@
 import { ERROR_MESSAGES, phoneRegExp } from '@shared';
 import * as yup from 'yup';
 import { OrderFormFieldsType } from './type';
-import { PaymentMethod } from '@queries';
 
 export const initialOrderFormValues: OrderFormFieldsType = {
   firstName: null,
   lastName: null,
   phoneNumber: null,
   shippingAddress: null,
-  paymentMethod: PaymentMethod.COD,
+  paymentMethod: null,
 };
 
 export const orderFormValidationSchema = yup.object({
@@ -22,5 +21,5 @@ export const orderFormValidationSchema = yup.object({
     .nullable()
     .required(ERROR_MESSAGES.FIELD_REQUIRED),
   shippingAddress: yup.string().nullable().required(ERROR_MESSAGES.FIELD_REQUIRED),
-  paymentMethod: yup.string().nullable().required(ERROR_MESSAGES.FIELD_REQUIRED),
+  paymentMethod: yup.string().nullable().required('Please choose a payment method'),
 });

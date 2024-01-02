@@ -22,4 +22,5 @@ export const PATHS = {
 
   // payment
   payment: '/payment',
+  paymentResult: '/payment/result',
 };

@@ -48,6 +48,7 @@ const OrderDetail = ({ id }: Props) => {
     shipping,
     discountValue,
     total,
+    paymentUrl,
   } = orderDetail || {};
 
   const { Information } = metadata || {};
@@ -67,6 +68,10 @@ const OrderDetail = ({ id }: Props) => {
     () => orderDetails?.reduce((total, curProduct) => total + curProduct.quantity, 0),
     [orderDetails],
   );
+
+  const handlePayNow = () => {
+    window.location.href = paymentUrl;
+  };
 
   const handleCancelOrder = useCallback(() => {
     setDialogContent({
@@ -279,6 +284,16 @@ const OrderDetail = ({ id }: Props) => {
             style={{ borderRadius: '20px' }}
           >
             Cancel Order
+          </Button>
+        )}
+        {orderStatusId === +OrderStatus.PENDING_PAYMENT && (
+          <Button
+            onClick={handlePayNow}
+            variant="contained"
+            color="primary"
+            style={{ borderRadius: '20px' }}
+          >
+            Pay Now
           </Button>
         )}
       </Stack>

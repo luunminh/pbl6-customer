@@ -1,33 +1,30 @@
 export enum OrderStatus {
   PENDING_CONFIRM = '1',
   CONFIRMED = '2',
+  COMPLETED = '3',
+  PENDING_PAYMENT = '4',
+  PAYMENT_CONFIRMED = '5',
   CANCELED = '6',
-  // COMPLETED = 3,
-  // PENDING_PAYMENT = 4,
-  // PAYMENT_CONFIRMED = 5,
 }
+
+export const OrderStatusTitle = {
+  all: 'All',
+  [OrderStatus.PENDING_CONFIRM]: 'Pending',
+  [OrderStatus.CONFIRMED]: 'Confirmed',
+  [OrderStatus.COMPLETED]: 'Completed',
+  [OrderStatus.PENDING_PAYMENT]: 'Pending payment',
+  [OrderStatus.PAYMENT_CONFIRMED]: 'Paid',
+  [OrderStatus.CANCELED]: 'Cancelled',
+};
 
 export enum PaymentMethod {
   COD = 'COD',
-  MOMO = 'MOMO',
+  BANKING = 'BANKING',
 }
 
 export const PaymentMethodTitle = {
   [PaymentMethod.COD]: 'Cash on Delivery (COD)',
-  [PaymentMethod.MOMO]: 'Momo',
-};
-
-export const RequestStatusTitle = {
-  all: 'All',
-
-  [OrderStatus.PENDING_CONFIRM]: 'Pending',
-  // [OrderStatus.PENDING_PAYMENT]: 'Pending',
-
-  [OrderStatus.CONFIRMED]: 'Confirmed',
-  // [OrderStatus.COMPLETED]: 'Confirmed',
-  // [OrderStatus.PAYMENT_CONFIRMED]: 'Confirmed',
-
-  [OrderStatus.CANCELED]: 'Cancelled',
+  [PaymentMethod.BANKING]: 'VNPay E-Wallet',
 };
 
 export type ProductStoresType = {
@@ -50,6 +47,41 @@ export interface CreateOrderPayload {
   paymentMethod: string;
 }
 
+type MetadataType = {
+  Information: {
+    address: string;
+    lastName: string;
+    firstName: string;
+    phoneNumber: string;
+  };
+};
+
+export type CreateOrderResponse = {
+  id: string;
+  total: number;
+  shipping: number;
+  address: string;
+  createdBy: string;
+  cancelExpiredAt: string;
+  orderStatusId: number;
+  paymentMethod: string;
+  voucherId: string;
+  metadata: MetadataType;
+  paymentUrl: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+};
+
+export type ConfirmPaymentPayload = {
+  amount: number;
+  bankCode: string;
+  transactionNumber: string;
+  cardType: string;
+  orderInfo: string;
+  vnpParam: Object;
+};
+
 // ******************** ORDER LIST ********************
 
 export type GetOrdersResponse = {
@@ -60,6 +92,7 @@ export type GetOrdersResponse = {
   voucher?: Voucher;
   orderStatusId: number | string;
   paymentMethod: string;
+  paymentUrl: string;
   orderDetails: OrderDetail[];
   metadata: OrderMetaData;
   createdAt: string;

@@ -25,11 +25,11 @@ export const getInitialGridState = (query: URLSearchParams) => {
 
 export const sortPriceOptions = [
   {
-    label: 'Price in ascending order',
+    label: 'Ascending price',
     value: 'price:asc',
   },
   {
-    label: 'Price in descending order',
+    label: 'Descending price',
     value: 'price:desc',
   },
 ];

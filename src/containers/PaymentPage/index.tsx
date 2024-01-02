@@ -1,6 +1,7 @@
 import { SHIPPING_FEE } from '@appConfig/constants';
+import { IMAGES } from '@appConfig/images';
 import { PATHS } from '@appConfig/paths';
-import { COLOR_CODE, DialogContext, DialogType, MuiInput, MuiTextField } from '@components';
+import { COLOR_CODE, DialogContext, DialogType, Image, MuiInput, MuiTextField } from '@components';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
   Accordion,
@@ -12,19 +13,28 @@ import {
   Grid,
   Stack,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import {
   Cart,
+  CreateOrderResponse,
+  PaymentMethod,
+  PaymentMethodTitle,
   ProductStoresType,
   useCreateOrder,
   useDeleteCart,
   useGetCart,
   useGetProfile,
 } from '@queries';
+import {
+  StoreService,
+  Toastify,
+  formatMoney,
+  getErrorMessage,
+  getRandomId,
+  isEmpty,
+} from '@shared';
 import { getDatabase, ref, set } from 'firebase/database';
-import { firebaseApp } from 'src/firebase';
-import { getRandomId } from '@shared';
-import { StoreService, Toastify, formatMoney, getErrorMessage, isEmpty } from '@shared';
 import { useFormik } from 'formik';
 import { useCallback, useContext, useMemo } from 'react';
 import { BsArrowLeft, BsCashCoin } from 'react-icons/bs';
@@ -33,12 +43,14 @@ import { MdOutlineRadioButtonChecked } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { Breadcrumbs } from 'src/components';
 import { VoucherContext } from 'src/context';
+import { firebaseApp } from 'src/firebase';
 import { OrderSummary } from './components';
 import { initialOrderFormValues, orderFormValidationSchema } from './helpers';
 import { OrderFormFields, OrderFormFieldsType } from './type';
-import { PaymentMethod } from '@queries';
 
 const PaymentPage = () => {
+  const isMobileScreen = useMediaQuery('(max-width: 767px)');
+
   const navigate = useNavigate();
 
   const { openModal, closeModal, setDialogContent } = useContext(DialogContext);
@@ -71,7 +83,7 @@ const PaymentPage = () => {
     };
   };
 
-  const getInitialCategoryFormValues = useMemo((): OrderFormFieldsType => {
+  const getInitialOrderFormValues = useMemo((): OrderFormFieldsType => {
     if (!isEmpty(profile)) {
       return {
         ...initialOrderFormValues,
@@ -85,11 +97,15 @@ const PaymentPage = () => {
   }, [profile]);
 
   const { createOrder, isLoading: isCreatingOrder } = useCreateOrder({
-    onSuccess: () => {
-      openSuccessDialog();
+    onSuccess: (data: CreateOrderResponse) => {
+      if (data?.paymentUrl !== null) {
+        window.location.href = data.paymentUrl;
+      } else {
+        openSuccessDialog();
+        handleSendRequestMsg();
+      }
       deleteCart({});
       setSelectedVoucherId(null);
-      handleSendRequestMsg();
     },
     onError: (error) => Toastify.error(error?.message),
   });
@@ -143,7 +159,7 @@ const PaymentPage = () => {
 
   const { values, errors, touched, getFieldProps, setFieldValue, handleSubmit } =
     useFormik<OrderFormFieldsType>({
-      initialValues: getInitialCategoryFormValues,
+      initialValues: getInitialOrderFormValues,
       onSubmit: () => {
         handlePlaceOrder(values);
       },
@@ -303,6 +319,7 @@ const PaymentPage = () => {
                       borderRadius: '20px',
                     }}
                     component="button"
+                    type="button"
                     disabled={isCreatingOrder}
                     onClick={() => {
                       setFieldValue(OrderFormFields.PAYMENT_METHOD, PaymentMethod.COD);
@@ -313,7 +330,7 @@ const PaymentPage = () => {
                       color={
                         values?.paymentMethod === PaymentMethod.COD
                           ? COLOR_CODE.PRIMARY_500
-                          : COLOR_CODE.GREY_500
+                          : COLOR_CODE.GREY_600
                       }
                     />
                     <Typography
@@ -322,15 +339,14 @@ const PaymentPage = () => {
                       color={
                         values?.paymentMethod === PaymentMethod.COD
                           ? COLOR_CODE.PRIMARY_500
-                          : COLOR_CODE.GREY_500
+                          : COLOR_CODE.GREY_600
                       }
                     >
-                      Cash On Delivery
+                      {PaymentMethodTitle[PaymentMethod.COD]}
                     </Typography>
                   </Stack>
                 </Grid>
-                {/* todo: momo wallet */}
-                {/* <Grid item xs={6}>
+                <Grid item xs={6}>
                   <Stack
                     width="100%"
                     padding={3}
@@ -339,32 +355,43 @@ const PaymentPage = () => {
                     gap={2}
                     sx={{
                       border: `1.5px solid ${
-                        values?.paymentMethod === PaymentMethod.MOMO
+                        values?.paymentMethod === PaymentMethod.BANKING
                           ? COLOR_CODE.PRIMARY_500
                           : COLOR_CODE.GREY_300
                       }`,
                       borderRadius: '20px',
                     }}
                     component="button"
+                    type="button"
                     disabled={isCreatingOrder}
                     onClick={() => {
-                      setFieldValue(OrderFormFields.PAYMENT_METHOD, PaymentMethod.MOMO);
+                      setFieldValue(OrderFormFields.PAYMENT_METHOD, PaymentMethod.BANKING);
                     }}
                   >
-                    <Image src={IMAGES.momoIcon} sx={{ width: '40px', height: '40px' }} />
+                    <Image
+                      src={IMAGES.vnPayLogo}
+                      sx={{ width: '40px', height: '40px', objectFit: 'contain' }}
+                    />
                     <Typography
                       fontSize={14}
-                      fontWeight={values?.paymentMethod === PaymentMethod.MOMO ? 600 : 500}
+                      fontWeight={values?.paymentMethod === PaymentMethod.BANKING ? 600 : 500}
                       color={
-                        values?.paymentMethod === PaymentMethod.MOMO
+                        values?.paymentMethod === PaymentMethod.BANKING
                           ? COLOR_CODE.PRIMARY_500
-                          : COLOR_CODE.GREY_500
+                          : COLOR_CODE.GREY_600
                       }
                     >
-                      MoMo E-Wallet
+                      {PaymentMethodTitle[PaymentMethod.BANKING]}
                     </Typography>
                   </Stack>
-                </Grid> */}
+                </Grid>
+                {getFieldErrorMessage(OrderFormFields.PAYMENT_METHOD) && (
+                  <Grid item xs={12}>
+                    <Typography color={COLOR_CODE.DANGER} fontSize={14}>
+                      {getFieldErrorMessage(OrderFormFields.PAYMENT_METHOD)}
+                    </Typography>
+                  </Grid>
+                )}
               </Grid>
             </Stack>
           </Stack>
@@ -392,8 +419,8 @@ const PaymentPage = () => {
             >
               Back to Cart
             </Button>
-            <Stack width="100%" direction="row" gap={3}>
-              <Stack width="65%" alignItems="flex-start" gap={2}>
+            <Stack width="100%" direction={isMobileScreen ? 'column' : 'row'} gap={3}>
+              <Stack width={isMobileScreen ? '100%' : '65%'} alignItems="flex-start" gap={2}>
                 {renderCustomerInfo()}
                 {renderShippingOption()}
                 {renderPaymentOption()}

@@ -7,7 +7,7 @@ import {
   UserProfileType,
 } from '@components';
 import { EmailVerify } from '@components/ChangePassword/EmailVerify';
-import { Avatar, Button, Stack, Typography } from '@mui/material';
+import { Avatar, Button, Stack, Typography, useMediaQuery } from '@mui/material';
 import { setAuthenticated, setCurrentRole, setProfile } from '@redux/auth/authSlice';
 import { AuthService, getFullName } from '@shared';
 import * as React from 'react';
@@ -22,6 +22,8 @@ import { COLOR_CODE } from 'src/modules/components/configs/theme';
 import { getShortName } from './helpers';
 
 const UserMenu: React.FC<Props> = ({ profile }) => {
+  const isMobileScreen = useMediaQuery('(max-width: 767px)');
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { openModal, closeModal, setDialogContent } = React.useContext(DialogContext);
@@ -133,17 +135,19 @@ const UserMenu: React.FC<Props> = ({ profile }) => {
           >
             {getShortName({ ...profile })}
           </Avatar>
-          <Stack alignItems={'start'}>
-            <Stack flexDirection={'row'} gap={2} alignItems={'center'}>
-              <Typography variant="h6" whiteSpace={'nowrap'}>
-                {getFullName({ ...profile })}
+          {!isMobileScreen && (
+            <Stack alignItems={'start'}>
+              <Stack flexDirection={'row'} gap={2} alignItems={'center'}>
+                <Typography variant="h6" whiteSpace={'nowrap'}>
+                  {getFullName({ ...profile })}
+                </Typography>
+                <TfiAngleDown color={COLOR_CODE.GREY_500} size={11} />
+              </Stack>
+              <Typography fontSize={12} color={COLOR_CODE.GREY_600}>
+                {RoleTitle[profile.userRoles[0].roleId]}
               </Typography>
-              <TfiAngleDown color={COLOR_CODE.GREY_500} size={11} />
             </Stack>
-            <Typography fontSize={12} color={COLOR_CODE.GREY_600}>
-              {RoleTitle[profile.userRoles[0].roleId]}
-            </Typography>
-          </Stack>
+          )}
         </Stack>
       }
       items={menuOptions}

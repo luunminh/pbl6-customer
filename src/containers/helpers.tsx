@@ -1,10 +1,9 @@
 import { PATHS } from '@appConfig/paths';
-import SplashScreen from './StartupContainers/SplashScreen';
-import { Navigate } from 'react-router';
 import { CustomErrorBoundary } from '@components';
 import React, { PropsWithChildren } from 'react';
+import { Navigate } from 'react-router';
 import Dev from './Dev';
-const OnDevelop = React.lazy(() => import('./StartupContainers/OnDevelop'));
+import SplashScreen from './StartupContainers/SplashScreen';
 const UserProfile = React.lazy(() => import('@components/UserProfile/UserProfile'));
 const SignIn = React.lazy(() => import('@components/UAMContainer/SignIn'));
 const CreateAccount = React.lazy(() => import('@components/UAMContainer/Customer/CreateAccount'));
@@ -16,6 +15,7 @@ const ProductsPage = React.lazy(() => import('./ProductsPage'));
 const StoresPage = React.lazy(() => import('./StoresPage'));
 const CartPage = React.lazy(() => import('./Cart'));
 const PaymentPage = React.lazy(() => import('./PaymentPage'));
+const PaymentResult = React.lazy(() => import('./PaymentResult'));
 const OrderPage = React.lazy(() => import('./Order'));
 
 type RouteWrapperProps = {
@@ -55,4 +55,5 @@ export const routerGroup = [
   { path: PATHS.dev, element: <Dev />, isRequireAuth: true },
   { path: PATHS.cart, element: <CartPage />, isRequireAuth: true },
   { path: PATHS.payment, element: <PaymentPage />, isRequireAuth: true },
+  { path: PATHS.paymentResult, element: <PaymentResult />, isRequireAuth: false },
 ];

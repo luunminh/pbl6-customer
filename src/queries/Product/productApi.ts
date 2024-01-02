@@ -36,7 +36,6 @@ const create = (baseURL = `${appConfig.API_URL}`) => {
 
   const getTopSells = (params: TopSellsParams) => {
     const queryString = stringify(params);
-    console.log('queryString', queryString);
     return api.get(`${ApiKey.TOP_SELLS}?${queryString}`);
   };
 

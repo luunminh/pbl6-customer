@@ -1,7 +1,7 @@
 export const cartTableHeadList = [
   {
     label: 'Product',
-    width: '40%',
+    width: '45%',
   },
   {
     label: 'Price',
