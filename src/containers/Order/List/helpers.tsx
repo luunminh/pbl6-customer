@@ -1,9 +1,9 @@
 import { COLOR_CODE } from '@components';
 import { Button } from '@mui/material';
-import { OrderStatus, RequestStatusTitle } from '@queries';
+import { OrderStatus, OrderStatusTitle } from '@queries';
 import { Callback, isEmpty } from '@shared';
 
-export const renderRequestStatus = (activeStatus, setActiveStatus: Callback) => {
+export const renderOrderStatusOptions = (activeStatus, setActiveStatus: Callback) => {
   const statuses = Object.values(OrderStatus);
   return ['all', ...statuses].map((status, idx) => {
     return (
@@ -19,7 +19,7 @@ export const renderRequestStatus = (activeStatus, setActiveStatus: Callback) => 
         }}
         onClick={() => setActiveStatus(status)}
       >
-        {RequestStatusTitle[status]}
+        {OrderStatusTitle[status]}
       </Button>
     );
   });

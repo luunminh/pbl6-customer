@@ -1,10 +1,10 @@
+import { TableParams } from '@components';
+import { ApiKey } from '@queries/keys';
 import { AuthService, stringify } from '@shared';
 import apisauce from 'apisauce';
 import axios from 'axios';
 import appConfig from 'src/appConfig';
-import { CancelOrderPayload, CreateOrderPayload } from './type';
-import { ApiKey } from '@queries/keys';
-import { TableParams } from '@components';
+import { CancelOrderPayload, ConfirmPaymentPayload, CreateOrderPayload } from './type';
 
 axios.defaults.withCredentials = true;
 const create = (baseURL = `${appConfig.API_URL}`) => {
@@ -31,7 +31,15 @@ const create = (baseURL = `${appConfig.API_URL}`) => {
   };
 
   const createOrder = (payload: CreateOrderPayload) => {
-    return api.post(`${ApiKey.ORDER}`, payload);
+    return api.post(`${ApiKey.ORDER}`, payload, {
+      headers: {
+        Origin: window.location.origin,
+      },
+    });
+  };
+
+  const confirmPayment = (id: string, payload: ConfirmPaymentPayload) => {
+    return api.post(`${ApiKey.ORDER}/${id}/payment-confirm`, payload);
   };
 
   const getOrderDetail = (id: string) => {
@@ -47,6 +55,7 @@ const create = (baseURL = `${appConfig.API_URL}`) => {
     getOrderDetail,
     createOrder,
     cancelOrder,
+    confirmPayment,
   };
 };
 

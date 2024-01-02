@@ -1,7 +1,7 @@
 import { IMAGES } from '@appConfig/images';
 import { PATHS } from '@appConfig/paths';
 import { COLOR_CODE, DialogContext, DialogType, Image } from '@components';
-import { Button, Card, Stack, Tooltip, Typography } from '@mui/material';
+import { Button, Card, Stack, Tooltip, Typography, useMediaQuery } from '@mui/material';
 import { useAddProductToCart, useGetCart } from '@queries/Cart';
 import { TopSellProductType } from '@queries/Product';
 import { IRootState } from '@redux/store';
@@ -13,6 +13,8 @@ import { useNavigate } from 'react-router-dom';
 import { SelectStoreModal } from 'src/containers/StartupContainers';
 
 const TopSellsItem = ({ product }: Props) => {
+  const isMobileScreen = useMediaQuery('(max-width: 767px)');
+
   const isAuthenticated = useSelector((state: IRootState) => state.auth.isAuthenticated);
 
   const { setDialogContent, openModal, closeModal } = useContext(DialogContext);
@@ -91,13 +93,17 @@ const TopSellsItem = ({ product }: Props) => {
 
   return (
     <Card
-      sx={{ width: '270px', height: '380px', padding: '20px' }}
+      sx={{ width: isMobileScreen ? '180px' : '270px', height: '380px', padding: '20px' }}
       onClick={() => navigate(`${PATHS.products}/${product.id}`)}
     >
       <Stack justifyContent="space-between" alignItems="center" gap={4}>
         <Stack width="100%" alignItems="center" sx={{ position: 'relative' }}>
           <Image
-            sx={{ height: '150px', width: '150px', objectFit: 'contain' }}
+            sx={{
+              height: isMobileScreen ? '100px' : '150px',
+              width: isMobileScreen ? '100px' : '150px',
+              objectFit: 'contain',
+            }}
             src={product.image || IMAGES.noImage}
           />
           <Image
@@ -145,6 +151,7 @@ const TopSellsItem = ({ product }: Props) => {
             e.stopPropagation();
             handleAddToCart();
           }}
+          sx={{ fontSize: isMobileScreen && '14px' }}
         >
           Add to cart
         </Button>

@@ -10,6 +10,7 @@ import {
   Button,
   Container,
   Tooltip,
+  useMediaQuery,
 } from '@mui/material';
 import { IoCartOutline, IoLocationOutline } from 'react-icons/io5';
 import { IMAGES } from '@appConfig/images';
@@ -29,6 +30,8 @@ import SelectStoreModal from '../SelectStoreModal';
 import { useGetCart } from '@queries';
 
 const Navbar: React.FC<Props> = ({ isAuthenticated }) => {
+  const isMobileScreen = useMediaQuery('(max-width: 767px)');
+
   const { openModal, setDialogContent } = useContext(DialogContext);
 
   const { profile, isLoading } = useGetProfile({});
@@ -82,22 +85,32 @@ const Navbar: React.FC<Props> = ({ isAuthenticated }) => {
               flexDirection="row"
               justifyContent="space-between"
               alignItems="center"
-              gap={5}
+              gap={isMobileScreen ? 3 : 5}
             >
-              <Stack direction="row" justifyItems="center" alignItems="center" gap={1}>
-                <Link to={PATHS.root} className="is-flex">
-                  <Image src={IMAGES.logo} sx={{ height: '30px' }} />
-                </Link>
-                <Typography sx={{ fontSize: 24, color: COLOR_CODE.PRIMARY_500, fontWeight: 700 }}>
+              {!isMobileScreen && (
+                <Stack direction="row" justifyItems="center" alignItems="center" gap={1}>
                   <Link to={PATHS.root} className="is-flex">
-                    MALT
+                    <Image
+                      src={IMAGES.logo}
+                      sx={{ height: '40px', width: '40px', objectFit: 'contain' }}
+                    />
                   </Link>
-                </Typography>
-              </Stack>
+                  <Typography sx={{ fontSize: 24, color: COLOR_CODE.PRIMARY_500, fontWeight: 700 }}>
+                    <Link to={PATHS.root} className="is-flex">
+                      MALT
+                    </Link>
+                  </Typography>
+                </Stack>
+              )}
               <Stack direction="row" flexGrow={1}>
                 <SearchBar placeholder="Search for items..." />
               </Stack>
-              <Stack direction="row" justifyItems="flex-end" alignItems="center" gap={5}>
+              <Stack
+                direction="row"
+                justifyItems="flex-end"
+                alignItems="center"
+                gap={isMobileScreen ? 1 : 5}
+              >
                 <Tooltip title="Click to choose a store" arrow>
                   <Button
                     onClick={handleSelectStore}
@@ -110,9 +123,10 @@ const Navbar: React.FC<Props> = ({ isAuthenticated }) => {
                     }}
                     startIcon={<IoLocationOutline color={COLOR_CODE.PRIMARY_500} size={18} />}
                   >
-                    {!isEmpty(getSelectedStoreLocation(stores))
-                      ? getSelectedStoreLocation(stores)
-                      : 'Select a store'}
+                    {!isMobileScreen &&
+                      (!isEmpty(getSelectedStoreLocation(stores))
+                        ? getSelectedStoreLocation(stores)
+                        : 'Select a store')}
                   </Button>
                 </Tooltip>
                 <IconButton
@@ -125,7 +139,7 @@ const Navbar: React.FC<Props> = ({ isAuthenticated }) => {
                       badgeContent={(isAuthenticated && cartTotalItems) || '0'}
                       color="primary"
                     >
-                      <IoCartOutline size="24px" />
+                      <IoCartOutline size={isMobileScreen ? '18px' : '24px'} />
                     </Badge>
                   }
                 </IconButton>

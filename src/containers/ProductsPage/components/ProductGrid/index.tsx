@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Grid, Stack, Typography } from '@mui/material';
+import { Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 import { TbSortAscending, TbSortDescending } from 'react-icons/tb';
 import { COLOR_CODE, Image, Loading, Select } from '@components';
 import { ProductListParams, useGetAllProducts } from '@queries/Product';
@@ -12,6 +12,8 @@ import { getInitialGridState, sortPriceOptions } from './helpers';
 import { ProductGridQueryParams, productGrid } from './type';
 
 const ProductGrid = () => {
+  const isMobileScreen = useMediaQuery('(max-width: 767px)');
+
   const navigate = useNavigate();
 
   const { search } = useLocation();
@@ -115,7 +117,7 @@ const ProductGrid = () => {
           </Stack>
           <Grid container columnSpacing={2} rowSpacing={4}>
             {products.map((product) => (
-              <Grid item xs={3} key={product.id}>
+              <Grid item xs={isMobileScreen ? 12 : 3} key={product.id}>
                 <ProductItem product={product} />
               </Grid>
             ))}

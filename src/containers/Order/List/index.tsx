@@ -1,7 +1,11 @@
 import { Grid, Stack, Typography } from '@mui/material';
 import { OrderStatus, useGetOrders } from '@queries';
 import { useState } from 'react';
-import { ORDER_LIST_ITEMS_PER_PAGE, getInitialGridState, renderRequestStatus } from './helpers';
+import {
+  ORDER_LIST_ITEMS_PER_PAGE,
+  getInitialGridState,
+  renderOrderStatusOptions,
+} from './helpers';
 import { Toastify, isEmpty } from '@shared';
 import { EmptyTable, Loading, TableQueryParams } from '@components';
 import { CustomPagination } from 'src/components';
@@ -118,7 +122,7 @@ const OrderList = () => {
       <Stack flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
         <Typography variant="h2">My Orders</Typography>
         <Stack flexDirection={'row'} gap={0.5}>
-          {renderRequestStatus(activeStatus, setStatusParams)}
+          {renderOrderStatusOptions(activeStatus, setStatusParams)}
         </Stack>
       </Stack>
       {renderData}

@@ -1,12 +1,12 @@
-import React, { useCallback, useMemo } from 'react';
-import { Button, Stack, Typography } from '@mui/material';
 import { COLOR_CODE } from '@components';
+import { Button, Stack, Typography } from '@mui/material';
 import { useGetInfiniteCategory } from '@queries/Category';
 import { Toastify } from '@shared';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useCallback, useMemo } from 'react';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
-import CategoryListSkeleton from './CategoryListSkeleton';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ProductGridQueryParams } from '../ProductGrid/type';
+import CategoryListSkeleton from './CategoryListSkeleton';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -59,7 +59,10 @@ const Sidebar = () => {
                       color: isActive ? COLOR_CODE.PRIMARY_500 : COLOR_CODE.GREY_800,
                     }}
                   >
-                    <button onClick={() => handleSelectCategory([category.id], query)}>
+                    <button
+                      style={{ textAlign: 'left' }}
+                      onClick={() => handleSelectCategory([category.id], query)}
+                    >
                       {category.name}
                     </button>
                   </Typography>

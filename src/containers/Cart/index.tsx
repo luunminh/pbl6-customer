@@ -1,4 +1,4 @@
-import { Button, Grid, Stack } from '@mui/material';
+import { Button, Grid, Stack, useMediaQuery } from '@mui/material';
 import { Container } from '@mui/material';
 import CartList from './List';
 import { PATHS } from '@appConfig/paths';
@@ -10,6 +10,8 @@ import OrderSummary from './OrderSummary';
 
 const Cart = () => {
   const navigate = useNavigate();
+
+  const isMobileScreen = useMediaQuery('(max-width: 767px)');
 
   return (
     <>
@@ -31,10 +33,10 @@ const Cart = () => {
           </Button>
         </Stack>
         <Grid container pt={3} paddingX={3} spacing={4}>
-          <Grid item xs={8}>
+          <Grid item xs={isMobileScreen ? 12 : 8}>
             <CartList />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={isMobileScreen ? 12 : 4}>
             <OrderSummary />
           </Grid>
         </Grid>

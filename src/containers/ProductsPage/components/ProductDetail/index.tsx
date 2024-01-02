@@ -9,6 +9,7 @@ import {
   Stack,
   Tooltip,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import { useAddProductToCart, useGetCart, useGetProductDetail } from '@queries';
 import { StoreService, Toastify, formatMoney, isEmpty } from '@shared';
@@ -23,6 +24,8 @@ import { PATHS } from '@appConfig/paths';
 import { useNavigate } from 'react-router-dom';
 
 const ProductDetail = ({ id }: Props) => {
+  const isMobileScreen = useMediaQuery('(max-width: 767px)');
+
   const navigate = useNavigate();
 
   const [quantity, setQuantity] = useState(1);
@@ -122,10 +125,10 @@ const ProductDetail = ({ id }: Props) => {
   return (
     <Container>
       <Grid container pt={'100px'} pb={'50px'} spacing={10}>
-        <Grid item xs={6}>
+        <Grid item xs={isMobileScreen ? 12 : 6}>
           <Image src={image || IMAGES.noImage} sx={{ width: '560px' }} />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={isMobileScreen ? 12 : 6}>
           <Stack justifyItems={'center'} gap={3}>
             <Stack gap={'28px'}>
               <Stack spacing={2}>

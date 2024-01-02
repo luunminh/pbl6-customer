@@ -1,3 +1,5 @@
+import { COLOR_CODE, DialogContext, DialogType, EmptyTable, Image, Loading } from '@components';
+import { StyledTableCell } from '@customerShared';
 import {
   Button,
   IconButton,
@@ -11,21 +13,19 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { QuantityOptions, cartTableHeadList } from './helpers';
-import { StyledTableCell } from '@customerShared';
-import { COLOR_CODE, DialogContext, DialogType, EmptyTable, Image, Loading } from '@components';
 import {
-  useGetCart,
-  useDecreaseProductCart,
-  useAddProductToCart,
-  useDeleteProductCart,
   Cart,
+  useAddProductToCart,
+  useDecreaseProductCart,
   useDeleteCart,
+  useDeleteProductCart,
+  useGetCart,
 } from '@queries';
 import { StoreService, Toastify, formatMoney, isEmpty } from '@shared';
-import { IoAddCircle, IoRemoveCircleOutline } from 'react-icons/io5';
 import { useCallback, useContext, useMemo } from 'react';
 import { BiTrash } from 'react-icons/bi';
+import { IoAddCircle, IoRemoveCircleOutline } from 'react-icons/io5';
+import { QuantityOptions, cartTableHeadList } from './helpers';
 const CartList = () => {
   const { openModal, closeModal, setDialogContent } = useContext(DialogContext);
 
@@ -134,7 +134,7 @@ const CartList = () => {
       <TableRow key={id}>
         <TableCell>
           <Stack flexDirection={'row'} alignItems={'center'} gap={1}>
-            <Image src={image} sx={{ width: '100px', height: '80px' }} />
+            <Image src={image} sx={{ width: '100px', height: '80px', objectFit: 'contain' }} />
             <Typography>{product?.name}</Typography>
           </Stack>
         </TableCell>
